@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIKE MONGEAU - PRODUCT LEADER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --accent: #00D4FF; /* Electric blue for tech/Microsoft vibe */
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            font-size: 14px;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.02;
+            z-index: 1;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==');
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 60px;
+            position: relative;
+            background: #000;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 60px;
+            right: 60px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .hero-name {
+            font-size: clamp(60px, 12vw, 180px);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 0.85;
+            margin-bottom: 30px;
+            transform: translateX(-5px);
+        }
+        
+        .hero-title {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--accent);
+            margin-bottom: 40px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stat-group {
+            margin-bottom: 20px;
+        }
+        
+        .hero-stat {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .hero-stat-label {
+            font-size: 14px;
+            color: var(--accent);
+            margin-top: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        /* SECTION STYLING */
+        .section {
+            padding: 120px 60px;
+            position: relative;
+            background: #000;
+        }
+        
+        .section:nth-child(even) {
+            background: #0a0a0a;
+        }
+        
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 60px;
+            max-width: 800px;
+        }
+        
+        /* EXPERIENCE */
+        .experience-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+            padding-bottom: 80px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .experience-item:last-child {
+            border-bottom: none;
+        }
+        
+        .experience-meta {
+            position: sticky;
+            top: 40px;
+            align-self: start;
+        }
+        
+        .experience-date {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .experience-company {
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .experience-role {
+            font-size: 12px;
+            color: var(--accent);
+        }
+        
+        .experience-content h3 {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 30px;
+            line-height: 1.1;
+        }
+        
+        .experience-list {
+            list-style: none;
+        }
+        
+        .experience-list li {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding-left: 30px;
+            position: relative;
+            color: #ccc;
+        }
+        
+        .experience-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 12px;
+            height: 2px;
+            background: var(--accent);
+        }
+        
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        /* PORTFOLIO GRID */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2px;
+            margin-top: 60px;
+        }
+        
+        .portfolio-item {
+            aspect-ratio: 1;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-item:hover {
+            background: #1a1a1a;
+        }
+        
+        .portfolio-item:hover .portfolio-content {
+            transform: translateY(0);
+        }
+        
+        .portfolio-item:hover .portfolio-number {
+            transform: scale(1.2);
+            opacity: 0.1;
+        }
+        
+        .portfolio-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
+            font-weight: 900;
+            color: #222;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .portfolio-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+        
+        .portfolio-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+        
+        .portfolio-desc {
+            font-size: 14px;
+            color: var(--accent);
+            line-height: 1.5;
+        }
+        
+        .portfolio-status {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--accent);
+            color: #000;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 15px;
+        }
+        
+        /* SKILLS */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        
+        .skill {
+            padding: 12px 24px;
+            border: 1px solid var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+        
+        .skill:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+        
+        /* CONTACT */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .contact-item {
+            font-size: 16px;
+        }
+        
+        .contact-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .contact-link {
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+        
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .contact-link:hover::after {
+            width: 100%;
+        }
+        
+        /* CTA */
+        .cta-section {
+            padding: 200px 60px;
+            text-align: center;
+            background: #fff;
+            color: #000;
+        }
+        
+        .cta-text {
+            font-size: clamp(40px, 8vw, 120px);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 0.9;
+            margin-bottom: 60px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 20px 60px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #333;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+        
+        .cta-button:hover::before {
+            left: 0;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero, .section { padding: 60px 30px; }
+            .hero-name { font-size: 60px; }
+            .section-title { font-size: 32px; }
+            .experience-item { 
+                grid-template-columns: 1fr; 
+                gap: 30px;
+            }
+            .portfolio-grid { 
+                grid-template-columns: 1fr; 
+            }
+            .cta-text { font-size: 40px; }
+        }
+        
+        /* CURSOR */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            transition: all 0.1s ease;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+        
+        .cursor-grow {
+            transform: scale(3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (hover: none) {
+            .cursor { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="cursor"></div>
+    
+    <div class="container">
+        <!-- HERO -->
+        <section class="hero">
+            <h1 class="hero-name">MIKE<br>MONGEAU</h1>
+            <p class="hero-title">Product Leader × Builds What Matters</p>
+            <div class="hero-stats">
+                <div class="hero-stat-group">
+                    <div class="hero-stat">+21%</div>
+                    <div class="hero-stat-label">MAU Growth / Xbox Family</div>
+                </div>
+                <div class="hero-stat-group">
+                    <div class="hero-stat">1.3M</div>
+                    <div class="hero-stat-label">Paid Seats Added</div>
+                </div>
+                <div class="hero-stat-group">
+                    <div class="hero-stat">$32M</div>
+                    <div class="hero-stat-label">ARR Feature Shipped</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- EXPERIENCE -->
+        <section class="section">
+            <div class="section-label">001 / Experience</div>
+            
+            <div class="experience-item">
+                <div class="experience-meta">
+                    <div class="experience-date">Aug 2022 — Jul 2025</div>
+                    <div class="experience-company">Xbox</div>
+                    <div class="experience-role">Principal Product Lead</div>
+                </div>
+                <div class="experience-content">
+                    <h3>Created safer play for millions.<br>Shipped $32M ARR feature.<br>Led 3 engineering teams.</h3>
+                    <ul class="experience-list">
+                        <li>Increased MAU <span class="highlight">+21% YoY</span> for Xbox Family app, achieving 4.2+ rating</li>
+                        <li>Boosted child account creation <span class="highlight">+266%</span>, first-day sign-in <span class="highlight">+62%</span> via transformative redesign</li>
+                        <li>Shaped <span class="highlight">$32M+ ARR feature</span> via parent-approved subscriptions</li>
+                        <li>Drove vision + execution for PM group across 3 engineering teams</li>
+                        <li>Aligned Legal, PR, Marketing, and Business for all launches</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="experience-item">
+                <div class="experience-meta">
+                    <div class="experience-date">Jun 2019 — Aug 2022</div>
+                    <div class="experience-company">Microsoft 365</div>
+                    <div class="experience-role">Senior Product Manager</div>
+                </div>
+                <div class="experience-content">
+                    <h3>Grew 1.3M paid seats.<br>Turned support into growth.<br>Built AI recommendations.</h3>
+                    <ul class="experience-list">
+                        <li>Grew Paid Seats by <span class="highlight">1.3M</span> using AI-driven recommendations, <span class="highlight">+15% adoption</span></li>
+                        <li>Reframed support as growth engine for SMB value realization</li>
+                        <li>Designed scalable customer insight system through support case codification</li>
+                        <li>Achieved <span class="highlight">188.8 SSAT</span> and <span class="highlight">96.3% CVR</span> — highest-performing at scale</li>
+                        <li>Managed and mentored team of 7 in AI+HI powered experiences</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="experience-item">
+                <div class="experience-meta">
+                    <div class="experience-date">May 2017 — Jun 2019</div>
+                    <div class="experience-company">Windows</div>
+                    <div class="experience-role">Senior Program Manager</div>
+                </div>
+                <div class="experience-content">
+                    <h3>Scaled customer insights.<br>90% discovered new insights.<br>189% YoY growth.</h3>
+                    <ul class="experience-list">
+                        <li>Launched org-wide experience — <span class="highlight">90% discovered insights</span>, <span class="highlight">81% drove changes</span></li>
+                        <li>Accelerated program usage <span class="highlight">+189% YoY</span> serving 700+ stakeholders</li>
+                        <li>Developed NPS (76) and NSAT (178) frameworks for program optimization</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="experience-item">
+                <div class="experience-meta">
+                    <div class="experience-date">2006 — 2017</div>
+                    <div class="experience-company">Microsoft</div>
+                    <div class="experience-role">Support to PM Evolution</div>
+                </div>
+                <div class="experience-content">
+                    <h3>11-year journey from frontline to product.</h3>
+                    <ul class="experience-list">
+                        <li>Reduced Windows support incidents by <span class="highlight">58% post-upgrade</span></li>
+                        <li>Drove OS and hardware improvements through deep customer insights</li>
+                        <li>Won Hack SharePoint contest for identifying exploitable vulnerability</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PROJECTS -->
+        <section class="section">
+            <div class="section-label">002 / Personal Projects</div>
+            <h2 class="section-title">Building the future.</h2>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-number">01</div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">SquadUp</h3>
+                        <p class="portfolio-desc">"Discord for Kids" — Safe, age-appropriate gaming communities. Assembled founding team. Tackling unmet market need.</p>
+                        <span class="portfolio-status">Building 2025</span>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-number">02</div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">NewsReactor.net</h3>
+                        <p class="portfolio-desc">Bootstrapped to 15K+ monthly visits. Built 5K+ user community. Successful exit.</p>
+                        <span class="portfolio-status">Sold 2006</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SKILLS -->
+        <section class="section">
+            <div class="section-label">003 / Core Skills</div>
+            <h2 class="section-title">What actually matters.</h2>
+            
+            <div class="skills-list">
+                <div class="skill">Giving a Damn, Fully</div>
+                <div class="skill">Getting Things Done</div>
+                <div class="skill">Breaking Silos</div>
+                <div class="skill">Connecting Dots</div>
+                <div class="skill">Owning What Others Avoid</div>
+                <div class="skill">Storytelling That Moves</div>
+                <div class="skill">Customer as Main Character</div>
+                <div class="skill">AI & The Right Magic</div>
+                <div class="skill">Growth Loops</div>
+                <div class="skill">Monetization That Feels Right</div>
+            </div>
+        </section>
+        
+        <!-- RECOGNITION -->
+        <section class="section">
+            <div class="section-label">004 / Recognition</div>
+            <h2 class="section-title">The receipts.</h2>
+            
+            <div class="skills-list">
+                <div class="skill">Key Talent Awards × 6</div>
+                <div class="skill">Special Stock Awards × 6</div>
+                <div class="skill">Great Performance × 3</div>
+                <div class="skill">Community Award</div>
+                <div class="skill">Gold Star Award</div>
+                <div class="skill">Frontier Award</div>
+            </div>
+        </section>
+        
+        <!-- CONTACT -->
+        <section class="section">
+            <div class="section-label">005 / Contact</div>
+            <h2 class="section-title">Let's build.</h2>
+            
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-label">Email</div>
+                    <a href="mailto:mike@mikemongeau.com" class="contact-link">mike@mikemongeau.com</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-label">Phone</div>
+                    <a href="tel:763-234-9932" class="contact-link">763-234-9932</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-label">LinkedIn</div>
+                    <a href="https://linkedin.com/in/mikemongeau" class="contact-link">linkedin.com/in/mikemongeau</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-label">Location</div>
+                    <span>Seattle, WA</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2 class="cta-text">READY TO<br>BUILD<br>WHAT<br>MATTERS?</h2>
+            <a href="mailto:mike@mikemongeau.com" class="cta-button">Start Conversation</a>
+        </section>
+    </div>
+    
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        
+        // Hover effects
+        const links = document.querySelectorAll('a, .skill, .portfolio-item');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.classList.add('cursor-grow'));
+            link.addEventListener('mouseleave', () => cursor.classList.remove('cursor-grow'));
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
