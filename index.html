@@ -420,8 +420,26 @@
         
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .hero, .section { padding: 60px 30px; }
-            .hero-name { font-size: 60px; }
+            .hero { 
+                padding: 40px 20px; 
+                min-height: 100vh;
+                height: auto;
+            }
+            .section { padding: 60px 30px; }
+            .hero-name { 
+                font-size: clamp(48px, 10vw, 60px); 
+                margin-bottom: 20px;
+            }
+            .hero-title {
+                font-size: 14px;
+                margin-bottom: 30px;
+            }
+            .hero-stats {
+                gap: 40px;
+            }
+            .hero-stat {
+                font-size: 56px;
+            }
             .section-title { font-size: 32px; }
             .experience-item { 
                 grid-template-columns: 1fr; 
