@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<!-- saved from url=(0080)file:///Users/mikemongeau/Development/MikeMongeau.com/resume/index2.html#process -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mike Mongeau</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./indexPrettyGood2_files/css2" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0c0c0c;
+      --surface: #161616;
+      --surface-2: #1e1e1e;
+      --border: rgba(255,255,255,0.06);
+      --text: #f0f0f0;
+      --text-dim: rgba(255,255,255,0.4);
+      --text-mid: rgba(255,255,255,0.65);
+      --green: #34d399;
+      --blue: #60a5fa;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ════════ NOISE TEXTURE ════════ */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* ════════ GRADIENT ORB ════════ */
+    .orb {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52,211,153,0.08), rgba(96,165,250,0.04), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+      transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1), top 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: blur(40px);
+    }
+
+    /* ════════ NAV ════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+      color: var(--text-dim);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      background: rgba(12,12,12,0.6);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { color: var(--text); font-weight: 700; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ════════ HERO ════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 0 clamp(24px, 6vw, 120px);
+      position: relative;
+    }
+
+    .hero-statement {
+      font-family: var(--serif);
+      font-size: clamp(40px, 6.5vw, 96px);
+      line-height: 1.08;
+      max-width: 1000px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-statement .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: wordIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes wordIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-sub {
+      margin-top: 32px;
+      font-size: 15px;
+      color: var(--text-dim);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      margin-top: 40px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600;
+      color: var(--green);
+      letter-spacing: 0.04em;
+    }
+    .hero-cta svg { width: 16px; height: 16px; stroke: var(--green); fill: none; transition: transform 0.2s; }
+    .hero-cta:hover svg { transform: translateX(4px); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px; font-size: 10px; letter-spacing: 0.2em;
+      color: var(--text-dim); text-transform: uppercase;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+    /* ════════ MARQUEE ════════ */
+    .marquee-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .marquee-track {
+      display: flex; gap: 48px;
+      animation: scroll 20s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim);
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
+    @keyframes scroll { to { transform: translateX(-50%); } }
+
+    /* ════════ BENTO GRID ════════ */
+    .bento {
+      padding: clamp(24px, 4vw, 80px) clamp(24px, 4vw, 80px);
+      max-width: 1400px; margin: 0 auto;
+    }
+
+    .bento-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 32px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .card-span-2 { grid-column: span 2; }
+    .card-span-3 { grid-column: span 3; }
+    .card-span-4 { grid-column: span 4; }
+    .card-tall { grid-row: span 2; }
+
+    .card-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-family: var(--serif);
+      font-size: 28px; font-weight: 400;
+      line-height: 1.2; margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 14px; color: var(--text-mid);
+      line-height: 1.65;
+    }
+
+    /* ── Stat card ── */
+    .stat-number {
+      font-size: clamp(48px, 5vw, 72px);
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1;
+      font-family: var(--sans);
+    }
+    .stat-label {
+      margin-top: 8px;
+      font-size: 12px; color: var(--text-dim);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    .green { color: var(--green); }
+    .blue { color: var(--blue); }
+    .amber { color: var(--amber); }
+    .rose { color: var(--rose); }
+
+    /* ── Award card ── */
+    .award-card {
+      background: var(--surface-2);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .award-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .award-icon.time-bg { background: rgba(230,57,70,0.12); }
+    .award-icon.fc-bg { background: rgba(255,107,53,0.12); }
+    .award-icon svg { width: 24px; height: 24px; }
+    .award-name { font-size: 14px; font-weight: 600; }
+    .award-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+    /* ── Quote card ── */
+    .quote-card {
+      background: linear-gradient(135deg, rgba(52,211,153,0.06), rgba(96,165,250,0.04));
+      border-color: rgba(52,211,153,0.12);
+    }
+    .quote-card blockquote {
+      font-family: var(--serif);
+      font-size: 22px; line-height: 1.4;
+      color: var(--text);
+    }
+    .quote-card cite {
+      display: block; margin-top: 16px;
+      font-style: normal; font-family: var(--sans);
+      font-size: 12px; color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Fullwidth statement ── */
+    .statement {
+      padding: clamp(80px, 12vw, 200px) clamp(24px, 6vw, 120px);
+      position: relative;
+    }
+    .statement-text {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 72px);
+      line-height: 1.15;
+      max-width: 900px;
+    }
+    .statement-text em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Timeline card ── */
+    .tl-item { margin-bottom: 28px; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-year {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--green); margin-bottom: 4px;
+    }
+    .tl-role { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+    .tl-company { font-size: 13px; color: var(--text-dim); }
+
+    /* ── Process card ── */
+    .process-row {
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .process-item {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .process-num {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: rgba(52,211,153,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--green);
+      flex-shrink: 0;
+    }
+    .process-item h4 { font-size: 14px; font-weight: 600; }
+    .process-item p { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+    /* ── Contact strip ── */
+    .contact-strip {
+      display: flex; gap: 32px; flex-wrap: wrap;
+      padding: 40px clamp(24px, 6vw, 120px);
+      border-top: 1px solid var(--border);
+    }
+    .contact-item { display: flex; flex-direction: column; gap: 4px; }
+    .contact-item span {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+    .contact-item a, .contact-item strong {
+      font-size: 14px; color: var(--text-mid);
+      transition: color 0.2s;
+    }
+    .contact-item a:hover { color: var(--green); }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 24px clamp(24px, 6vw, 120px);
+      font-size: 11px; color: var(--text-dim);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ════════ REVEAL ════════ */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.vis { opacity: 1; transform: none; }
+
+    /* ════════ RESPONSIVE ════════ */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .card-span-2, .card-span-3, .card-span-4 { grid-column: span 2; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .card-span-2, .card-span-3, .card-span-4 { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb" id="orb" style="left: 1334px; top: 704px;"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">Mike Mongeau</div>
+  <div class="nav-links">
+    <a href="file:///Users/mikemongeau/Development/MikeMongeau.com/resume/index2.html#work">Work</a>
+    <a href="file:///Users/mikemongeau/Development/MikeMongeau.com/resume/index2.html#about">About</a>
+    <a href="mailto:mike@mikemongeau.com">Contact</a>
+    <a href="file:///Users/mikemongeau/Development/MikeMongeau.com/resume/Resume.pdf">Resume</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <h1 class="hero-statement" id="hero-text"><span class="word" style="animation-delay: 0.15s;">I&nbsp;</span><span class="word" style="animation-delay: 0.23s;">build&nbsp;</span><span class="word" style="animation-delay: 0.31s;">products&nbsp;</span><span class="word" style="animation-delay: 0.39s;">that&nbsp;</span><span class="word" style="animation-delay: 0.47s;">40&nbsp;</span><span class="word" style="animation-delay: 0.55s;">million&nbsp;</span><span class="word" style="animation-delay: 0.63s;">people&nbsp;</span><span class="word" style="animation-delay: 0.71s;">trust.&nbsp;</span></h1>
+    <p class="hero-sub">
+      Head of Product at K-ID. Previously Xbox, Microsoft 365, Windows.<br>
+      19 years building products that earn trust at scale.
+    </p>
+    <a href="file:///Users/mikemongeau/Development/MikeMongeau.com/resume/index2.html#work" class="hero-cta">
+      See what I've built
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+    </a>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track" id="marquee">
+      <span class="marquee-item"><span class="marquee-dot"></span>K-ID</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Xbox</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Microsoft 365</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Windows</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>SharePoint</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>TIME Best Inventions</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Fast Company</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>SquadUp</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>K-ID</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Xbox</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Microsoft 365</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Windows</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>SharePoint</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>TIME Best Inventions</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Fast Company</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>SquadUp</span>
+    </div>
+  </div>
+
+  <!-- BENTO: NOW -->
+  <section class="bento" id="work">
+    <div class="bento-label reveal vis">Currently Building</div>
+    <div class="grid">
+      <div class="card card-span-2 card-tall reveal vis">
+        <div class="card-label">K-ID · Head of Product</div>
+        <h3>Building the compliance backbone of the internet.</h3>
+        <p style="margin-top:16px">
+          Leading product, design, and research to transform K-ID from startup to enterprise SaaS leader.
+          Shipped at-scale age verification for Snap, Discord, Twitch, Hasbro, Konami, and Supercell.
+          Meta announced adoption of our AgeKey standards.
+        </p>
+      </div>
+      <div class="card reveal vis">
+        <div class="stat-number green" data-count="5" data-suffix="x" data-counted="1">5x</div>
+        <div class="stat-label">Account graph growth</div>
+      </div>
+      <div class="card reveal vis">
+        <div class="stat-number blue" data-count="2" data-suffix="x MRR" data-counted="1">2x MRR</div>
+        <div class="stat-label">In three months</div>
+      </div>
+      <div class="card award-card reveal vis">
+        <div class="award-icon time-bg">
+          <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="#e63946" stroke-width="1.5"></rect><text x="12" y="15" text-anchor="middle" fill="#e63946" font-size="8" font-weight="bold" font-family="sans-serif">T</text></svg>
+        </div>
+        <div>
+          <div class="award-name">TIME Best Inventions</div>
+          <div class="award-sub">2025</div>
+        </div>
+      </div>
+      <div class="card award-card reveal vis">
+        <div class="award-icon fc-bg">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#ff6b35" stroke-width="1.5"></circle><text x="12" y="15" text-anchor="middle" fill="#ff6b35" font-size="9" font-weight="bold" font-family="sans-serif">FC</text></svg>
+        </div>
+        <div>
+          <div class="award-name">Fast Company</div>
+          <div class="award-sub">Next Big Thing in Tech</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <div class="statement reveal vis">
+    <div class="statement-text">
+      I don't just ship features. I build <em>systems of trust</em> that let millions of people do what matters most.
+    </div>
+  </div>
+
+  <!-- BENTO: TRACK RECORD -->
+  <section class="bento">
+    <div class="bento-label reveal vis">Track Record</div>
+    <div class="grid">
+      <div class="card reveal vis">
+        <div class="stat-number green" data-count="21" data-prefix="+" data-suffix="%" data-counted="1">+21%</div>
+        <div class="stat-label">MAU growth, Xbox Family</div>
+      </div>
+      <div class="card reveal vis">
+        <div class="stat-number blue" data-count="32" data-prefix="$" data-suffix="M" data-counted="1">$32M</div>
+        <div class="stat-label">ARR feature shaped</div>
+      </div>
+      <div class="card reveal vis">
+        <div class="stat-number amber" data-count="1.3" data-suffix="M" data-decimal="1" data-counted="1">1.3M</div>
+        <div class="stat-label">Paid seats added</div>
+      </div>
+      <div class="card reveal vis">
+        <div class="stat-number rose" data-count="266" data-prefix="+" data-suffix="%" data-counted="1">+266%</div>
+        <div class="stat-label">Account creation lift</div>
+      </div>
+
+      <div class="card card-span-2 reveal vis">
+        <div class="card-label">Xbox · Principal Product Lead</div>
+        <h3>Created safer play for millions of families.</h3>
+        <p style="margin-top:12px">
+          Drove family strategy across Xbox. Redesigned the full end-to-end experience,
+          boosting child account creation 266% and first-day sign-in 62%.
+          Shaped a $32M+ ARR feature through parent-approved subscriptions.
+        </p>
+      </div>
+      <div class="card card-span-2 reveal vis">
+        <div class="card-label">Microsoft 365 · Senior Product Manager</div>
+        <h3>Turned support into a growth engine.</h3>
+        <p style="margin-top:12px">
+          Grew 1.3M paid seats using AI-driven recommendations. Reframed support as
+          the vehicle for SMB value realization. Achieved 188.8 SSAT and 96.3% CVR —
+          highest-performing Microsoft support program at scale.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT 2 -->
+  <div class="statement reveal vis">
+    <div class="statement-text">
+      I didn't study product management. I <em>lived it</em> — from the frontline up.
+    </div>
+  </div>
+
+  <!-- THE ARC — narrative storytelling -->
+  <section class="bento" id="about">
+    <div class="bento-label reveal vis">The Arc</div>
+    <div class="statement-text reveal vis" style="font-size:clamp(24px,3.5vw,40px);margin-bottom:40px;max-width:700px;">
+      19 years of compounding empathy into outcomes. Three chapters. One through-line.
+    </div>
+    <div class="grid">
+      <!-- Phase 3: NOW -->
+      <div class="card card-span-4 reveal vis" style="border-color:rgba(52,211,153,0.2);">
+        <div class="card-label" style="color:var(--green);">Phase 3 · 2022 — Present</div>
+        <h3>Led product for millions. Now building trust at scale.</h3>
+        <p style="margin-top:12px">
+          The first two phases gave me the instincts. This one gave me the wheel. At Xbox, I shaped
+          a $32M ARR feature and created safer play for millions of families — aligning Legal, PR,
+          Marketing, and Engineering around a shared mission. At K-ID, I took those instincts to
+          a startup and won TIME Best Inventions in the process. I learned that trust isn't a feature.
+          It's the product.
+        </p>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <span style="padding:3px 10px;font-size:11px;font-weight:600;color:var(--green);border:1px solid rgba(52,211,153,0.2);border-radius:6px;">Xbox</span>
+          <span style="padding:3px 10px;font-size:11px;font-weight:600;color:var(--green);border:1px solid rgba(52,211,153,0.2);border-radius:6px;">K-ID</span>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="card card-span-2 reveal vis" style="border-color:rgba(96,165,250,0.15);">
+        <div class="card-label" style="color:var(--blue);">Phase 2 · 2017 — 2022</div>
+        <h3>Turned support into growth. AI into seats.</h3>
+        <p style="margin-top:10px">
+          I stopped treating support as a cost center and reframed it as a growth engine.
+          Used AI to grow 1.3M paid seats. Scaled customer discovery to 700+ stakeholders.
+          Shipped the highest-performing support program at Microsoft. This is where I learned
+          that the best product leaders don't just listen to customers — they build systems
+          that listen at scale.
+        </p>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <span style="padding:3px 10px;font-size:11px;font-weight:600;color:var(--blue);border:1px solid rgba(96,165,250,0.15);border-radius:6px;">Microsoft 365</span>
+          <span style="padding:3px 10px;font-size:11px;font-weight:600;color:var(--blue);border:1px solid rgba(96,165,250,0.15);border-radius:6px;">Windows</span>
+        </div>
+      </div>
+
+      <!-- Phase 1 -->
+      <div class="card card-span-2 reveal vis" style="border-color:rgba(251,191,36,0.15);">
+        <div class="card-label" style="color:var(--amber);">Phase 1 · 2006 — 2017</div>
+        <h3>Built empathy from the ground up.</h3>
+        <p style="margin-top:10px">
+          I started where the problems are loudest: frontline support. Talked to thousands of
+          real customers. Reduced incidents by 58%. Hacked SharePoint security to prove a point.
+          Got hired by Microsoft before finishing my degree. This decade taught me that every
+          great product instinct starts with listening — really listening — to people in pain.
+        </p>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <span style="padding:3px 10px;font-size:11px;font-weight:600;color:var(--amber);border:1px solid rgba(251,191,36,0.15);border-radius:6px;">Windows</span>
+          <span style="padding:3px 10px;font-size:11px;font-weight:600;color:var(--amber);border:1px solid rgba(251,191,36,0.15);border-radius:6px;">SharePoint</span>
+          <span style="padding:3px 10px;font-size:11px;font-weight:600;color:var(--amber);border:1px solid rgba(251,191,36,0.15);border-radius:6px;">Windows Phone</span>
+        </div>
+      </div>
+
+      <!-- Side projects -->
+      <div class="card card-span-2 reveal vis">
+        <div class="card-label">Building · 2025</div>
+        <h3>SquadUp</h3>
+        <p style="margin-top:8px">
+          Kid-first LFG platform. Think "Discord for Kids" — safe community, real friendships,
+          digital citizenship. Assembling the founding team.
+        </p>
+      </div>
+      <div class="card card-span-2 reveal vis">
+        <div class="card-label">Sold · 2006</div>
+        <h3>NewsReactor</h3>
+        <p style="margin-top:8px">
+          Bootstrapped to 15K+ monthly visits and 5K+ community users. Negotiated a successful exit.
+          First proof I could build, grow, and sell from zero.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT 3 -->
+  <div class="statement reveal vis">
+    <div class="statement-text">
+      Let's build <em>what matters</em>.
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-strip">
+    <div class="contact-item">
+      <span>Email</span>
+      <a href="mailto:mike@mikemongeau.com">mike@mikemongeau.com</a>
+    </div>
+    <div class="contact-item">
+      <span>LinkedIn</span>
+      <a href="https://linkedin.com/in/mikemongeau">linkedin.com/in/mikemongeau</a>
+    </div>
+    <div class="contact-item">
+      <span>Phone</span>
+      <a href="tel:7632349932">763-234-9932</a>
+    </div>
+    <div class="contact-item">
+      <span>Location</span>
+      <strong>Seattle, WA</strong>
+    </div>
+    <div class="contact-item">
+      <span>Resume</span>
+      <a href="file:///Users/mikemongeau/Development/MikeMongeau.com/resume/Resume.pdf">Download PDF</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">Mike Mongeau · 2025</footer>
+
+<script>
+// ── Hero text word-by-word animation ──
+(function() {
+  const text = "I build products that 40 million people trust.";
+  const el = document.getElementById('hero-text');
+  text.split(' ').forEach((word, i) => {
+    const span = document.createElement('span');
+    span.classList.add('word');
+    span.style.animationDelay = (0.15 + i * 0.08) + 's';
+    span.textContent = word + '\u00A0';
+    el.appendChild(span);
+  });
+})();
+
+// ── Mouse-following orb ──
+const orb = document.getElementById('orb');
+document.addEventListener('mousemove', e => {
+  orb.style.left = e.clientX + 'px';
+  orb.style.top = e.clientY + 'px';
+});
+
+// ── Scroll reveals ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ── Counter animation ──
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+    const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const decimal = parseInt(el.dataset.decimal) || 0;
+    const duration = 1200;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const val = (target * ease).toFixed(decimal);
+      el.textContent = prefix + val + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.stat-number[data-count]').forEach(el => counterObs.observe(el));
+</script>
+
+
+</body></html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mike Mongeau</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090b;
+      --s1: #111113;
+      --s2: #18181b;
+      --border: rgba(255,255,255,0.06);
+      --t1: #fafafa;
+      --t2: rgba(255,255,255,0.5);
+      --t3: rgba(255,255,255,0.3);
+      --accent: #a78bfa;
+      --accent2: #818cf8;
+      --green: #34d399;
+      --r: 12px;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg); color: var(--t1);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden; line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: rgba(167,139,250,0.3); }
+
+    /* ═══ GLOW ═══ */
+    .glow {
+      position: fixed; width: 800px; height: 800px;
+      pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(167,139,250,0.07), rgba(129,140,248,0.03) 40%, transparent 70%);
+      border-radius: 50%; filter: blur(60px);
+      transform: translate(-50%,-50%);
+      transition: left 1.2s cubic-bezier(.22,1,.36,1), top 1.2s cubic-bezier(.22,1,.36,1);
+    }
+
+    /* ═══ GRAIN ═══ */
+    .grain {
+      position: fixed; inset: 0; z-index: 9998;
+      pointer-events: none; opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* ═══ NAV ═══ */
+    nav {
+      position: fixed; inset: 16px 16px auto;
+      z-index: 100;
+      background: rgba(9,9,11,0.6);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0 24px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 13px;
+    }
+    .n-logo { font-weight: 800; letter-spacing: -0.02em; font-size: 14px; }
+    .n-links { display: flex; gap: 6px; }
+    .n-links a {
+      padding: 6px 14px; border-radius: 8px;
+      color: var(--t2); font-weight: 500; font-size: 13px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .n-links a:hover { color: var(--t1); background: rgba(255,255,255,0.05); }
+    .n-cta {
+      padding: 7px 16px; border-radius: 8px;
+      background: var(--t1); color: var(--bg);
+      font-weight: 600; font-size: 13px;
+      transition: opacity 0.15s;
+    }
+    .n-cta:hover { opacity: 0.85; }
+
+    /* ═══ HERO ═══ */
+    .hero {
+      min-height: 100dvh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px 6px 8px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--s1);
+      font-size: 12px; font-weight: 500; color: var(--t2);
+      margin-bottom: 32px;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(52,211,153,0.5);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.4} }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 800; letter-spacing: -0.035em;
+      line-height: 1.05;
+      max-width: 840px;
+      background: linear-gradient(180deg, var(--t1) 0%, rgba(255,255,255,0.4) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      margin-top: 24px; max-width: 480px;
+      font-size: 16px; color: var(--t2); line-height: 1.7;
+    }
+
+    .hero-actions {
+      margin-top: 40px;
+      display: flex; gap: 12px;
+    }
+    .btn-primary {
+      padding: 10px 24px; border-radius: 10px;
+      background: var(--t1); color: var(--bg);
+      font-weight: 600; font-size: 14px;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      padding: 10px 24px; border-radius: 10px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--t2); font-weight: 500; font-size: 14px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .btn-secondary:hover { color: var(--t1); border-color: rgba(255,255,255,0.15); }
+
+    .hero-gradient {
+      position: absolute; bottom: -1px; left: 0; right: 0; height: 200px;
+      background: linear-gradient(to top, var(--bg), transparent);
+      pointer-events: none;
+    }
+
+    /* Orbiting logos */
+    .hero-orbit {
+      margin-top: 80px;
+      display: flex; gap: 32px; align-items: center;
+      font-size: 12px; color: var(--t3);
+      letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;
+    }
+    .hero-orbit span { opacity: 0.4; }
+
+    /* ═══ SECTION ═══ */
+    .section { padding: 120px 0; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .section-label {
+      font-size: 13px; font-weight: 600; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.15;
+      max-width: 600px; margin-bottom: 48px;
+    }
+
+    /* ═══ BENTO ═══ */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+    }
+
+    .b {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.25s, transform 0.3s cubic-bezier(.22,1,.36,1);
+    }
+    .b:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+    .b-12 { grid-column: span 12; }
+    .b-8 { grid-column: span 8; }
+    .b-6 { grid-column: span 6; }
+    .b-4 { grid-column: span 4; }
+    .b-3 { grid-column: span 3; }
+
+    .b-label {
+      font-size: 11px; font-weight: 600; color: var(--t3);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .b h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .b p { font-size: 14px; color: var(--t2); line-height: 1.65; }
+
+    /* Stat */
+    .stat { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 36px 20px; }
+    .stat-val {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+    }
+    .stat-lbl { font-size: 11px; color: var(--t3); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; font-weight: 500; }
+    .c-purple { color: var(--accent); }
+    .c-green { color: var(--green); }
+    .c-blue { color: #60a5fa; }
+    .c-amber { color: #fbbf24; }
+
+    /* Award */
+    .award-flex { display: flex; align-items: center; gap: 14px; }
+    .award-dot { width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .award-dot.td { background: rgba(230,57,70,0.12); }
+    .award-dot.fd { background: rgba(255,107,53,0.12); }
+    .award-dot svg { width: 20px; height: 20px; }
+    .award-name { font-size: 14px; font-weight: 600; }
+    .award-sub { font-size: 11px; color: var(--t3); }
+
+    /* Featured / big */
+    .b-feat {
+      background: linear-gradient(135deg, rgba(167,139,250,0.05), rgba(129,140,248,0.02), var(--s1));
+      border-color: rgba(167,139,250,0.1);
+    }
+    .b-feat h3 { font-size: clamp(22px, 3vw, 32px); font-weight: 800; letter-spacing: -0.025em; }
+
+    /* Glow line on top */
+    .b-glow::after {
+      content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.4;
+    }
+
+    /* ═══ TIMELINE ═══ */
+    .tl { display: flex; flex-direction: column; gap: 20px; }
+    .tl-i { display: flex; gap: 14px; align-items: flex-start; }
+    .tl-dot-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+      padding-top: 5px; flex-shrink: 0; width: 16px;
+    }
+    .tl-dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--accent); background: var(--bg); flex-shrink: 0; }
+    .tl-line { width: 1px; flex: 1; background: var(--border); min-height: 24px; }
+    .tl-i:first-child .tl-dot { background: var(--accent); box-shadow: 0 0 8px rgba(167,139,250,0.4); }
+    .tl-yr { font-size: 11px; color: var(--accent); font-weight: 600; letter-spacing: 0.06em; }
+    .tl-role { font-size: 14px; font-weight: 600; }
+    .tl-co { font-size: 12px; color: var(--t3); }
+
+    /* ═══ PROCESS ═══ */
+    .proc { display: flex; flex-direction: column; gap: 18px; }
+    .proc-i { display: flex; gap: 12px; align-items: flex-start; }
+    .proc-n {
+      width: 24px; height: 24px; border-radius: 7px;
+      background: rgba(167,139,250,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0;
+    }
+    .proc-i h4 { font-size: 13px; font-weight: 600; }
+    .proc-i p { font-size: 12px; color: var(--t3); margin-top: 1px; }
+
+    /* ═══ QUOTE ═══ */
+    .quote-block {
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .quote-block blockquote {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 700; letter-spacing: -0.03em; line-height: 1.25;
+      max-width: 760px; margin: 0 auto;
+    }
+    .quote-block blockquote em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--green));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ═══ FOOTER ═══ */
+    .footer-strip {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      max-width: 1120px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 32px;
+    }
+    .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+    .footer-link {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .footer-link span {
+      font-size: 10px; font-weight: 600; color: var(--t3);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .footer-link a { font-size: 13px; color: var(--t2); transition: color 0.15s; }
+    .footer-link a:hover { color: var(--accent); }
+    .footer-copy { font-size: 11px; color: var(--t3); }
+
+    /* ═══ REVEAL ═══ */
+    .rv { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1); }
+    .rv.on { opacity: 1; transform: none; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      .b-8, .b-6, .b-4, .b-3 { grid-column: span 12; }
+      .n-links { display: none; }
+      .hero-orbit { flex-wrap: wrap; justify-content: center; }
+      .footer-strip { flex-direction: column; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .b-8 { grid-column: span 12; }
+      .b-3 { grid-column: span 6; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="glow" id="glow"></div>
+<div class="grain"></div>
+
+<nav>
+  <div class="n-logo">Mike Mongeau</div>
+  <div class="n-links">
+    <a href="#now">Now</a>
+    <a href="#track">Track Record</a>
+    <a href="#about">About</a>
+  </div>
+  <a href="mailto:mike@mikemongeau.com" class="n-cta">Get in touch</a>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge rv">
+      <span class="dot"></span>
+      Head of Product at K-ID
+    </div>
+    <h1 class="rv">I build products that millions of people trust.</h1>
+    <p class="hero-desc rv">Product leader with 19 years of shipping at Microsoft, Xbox, and now K-ID. I turn complex systems into products people love.</p>
+    <div class="hero-actions rv">
+      <a href="#now" class="btn-primary">See my work</a>
+      <a href="Resume.pdf" class="btn-secondary">Resume</a>
+    </div>
+    <div class="hero-orbit rv">
+      <span>K-ID</span>
+      <span>&middot;</span>
+      <span>Xbox</span>
+      <span>&middot;</span>
+      <span>Microsoft 365</span>
+      <span>&middot;</span>
+      <span>Windows</span>
+    </div>
+    <div class="hero-gradient"></div>
+  </section>
+
+  <!-- NOW -->
+  <section class="section" id="now">
+    <div class="wrap">
+      <div class="section-label rv">Currently Building</div>
+      <h2 class="section-title rv">The compliance backbone of the internet.</h2>
+      <div class="bento">
+        <div class="b b-8 b-feat b-glow rv">
+          <div class="b-label">K-ID</div>
+          <h3>Leading product, design, and research to make the internet safer for kids and families.</h3>
+          <p style="margin-top:14px">Shipped at-scale age verification for Snap, Discord, Twitch, Hasbro, Konami, and Supercell. Meta announced adoption of our AgeKey standards. Drove 5x account graph growth and doubled MRR in three months.</p>
+        </div>
+        <div class="b b-4 stat rv">
+          <div class="stat-val c-green" data-to="6.3" data-s="M">0</div>
+          <div class="stat-lbl">Verified users</div>
+        </div>
+        <div class="b b-3 stat rv">
+          <div class="stat-val c-purple" data-to="5" data-s="x">0</div>
+          <div class="stat-lbl">Graph growth</div>
+        </div>
+        <div class="b b-3 stat rv">
+          <div class="stat-val c-blue" data-to="2" data-s="x MRR">0</div>
+          <div class="stat-lbl">In 3 months</div>
+        </div>
+        <div class="b b-3 rv">
+          <div class="award-flex">
+            <div class="award-dot td">
+              <svg viewBox="0 0 20 20"><rect x="3" y="1" width="14" height="18" rx="2" fill="none" stroke="#e63946" stroke-width="1.3"/><text x="10" y="13" text-anchor="middle" fill="#e63946" font-size="8" font-weight="bold" font-family="Inter,sans-serif">T</text></svg>
+            </div>
+            <div><div class="award-name">TIME Best Inventions</div><div class="award-sub">2025</div></div>
+          </div>
+        </div>
+        <div class="b b-3 rv">
+          <div class="award-flex">
+            <div class="award-dot fd">
+              <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#ff6b35" stroke-width="1.3"/><text x="10" y="13" text-anchor="middle" fill="#ff6b35" font-size="7" font-weight="bold" font-family="Inter,sans-serif">FC</text></svg>
+            </div>
+            <div><div class="award-name">Fast Company</div><div class="award-sub">Next Big Thing in Tech</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-block rv">
+    <blockquote>I don't just ship features. I build <em>systems of trust</em> that let people do what matters most.</blockquote>
+  </div>
+
+  <!-- TRACK RECORD -->
+  <section class="section" id="track">
+    <div class="wrap">
+      <div class="section-label rv">Track Record</div>
+      <h2 class="section-title rv">Outcomes that moved the needle.</h2>
+      <div class="bento">
+        <div class="b b-3 stat rv"><div class="stat-val c-purple" data-to="21" data-p="+" data-s="%">0</div><div class="stat-lbl">MAU Growth</div></div>
+        <div class="b b-3 stat rv"><div class="stat-val c-green" data-to="32" data-p="$" data-s="M">0</div><div class="stat-lbl">ARR Shaped</div></div>
+        <div class="b b-3 stat rv"><div class="stat-val c-blue" data-to="1.3" data-s="M" data-d="1">0</div><div class="stat-lbl">Seats Added</div></div>
+        <div class="b b-3 stat rv"><div class="stat-val c-amber" data-to="266" data-p="+" data-s="%">0</div><div class="stat-lbl">Acct Creation</div></div>
+        <div class="b b-6 rv">
+          <div class="b-label">Xbox &middot; Principal Product Lead</div>
+          <h3>Created safer play for millions of families.</h3>
+          <p style="margin-top:10px">Full end-to-end redesign boosting child account creation 266% and first-day sign-in 62%. Shaped $32M+ ARR through parent-approved subscriptions. Led PM group across 3 engineering teams.</p>
+        </div>
+        <div class="b b-6 rv">
+          <div class="b-label">Microsoft 365 &middot; Senior PM</div>
+          <h3>Turned support into a growth engine.</h3>
+          <p style="margin-top:10px">Grew 1.3M paid seats with AI-driven recommendations (+15% adoption). Achieved 188.8 SSAT and 96.3% CVR&mdash;highest-performing support program at Microsoft. Managed a team of 7.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="section-label rv">About</div>
+      <h2 class="section-title rv">A connector. A builder. A doer.</h2>
+      <div class="bento">
+        <div class="b b-6 rv">
+          <div class="b-label">Journey</div>
+          <div class="tl">
+            <div class="tl-i"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-yr">2025 &mdash; Now</div><div class="tl-role">Head of Product</div><div class="tl-co">K-ID &middot; Age assurance &amp; digital trust</div></div></div>
+            <div class="tl-i"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-yr">2022 &mdash; 2025</div><div class="tl-role">Principal Product Lead</div><div class="tl-co">Xbox &middot; Family safety &amp; growth</div></div></div>
+            <div class="tl-i"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-yr">2019 &mdash; 2022</div><div class="tl-role">Senior Product Manager</div><div class="tl-co">Microsoft 365 &middot; AI &amp; SMB growth</div></div></div>
+            <div class="tl-i"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-yr">2017 &mdash; 2019</div><div class="tl-role">Senior Program Manager</div><div class="tl-co">Windows &middot; Customer intelligence</div></div></div>
+            <div class="tl-i"><div class="tl-dot-wrap"><div class="tl-dot"></div></div><div><div class="tl-yr">2006 &mdash; 2017</div><div class="tl-role">Support to PM</div><div class="tl-co">Microsoft &middot; Windows, SharePoint, Phone</div></div></div>
+          </div>
+        </div>
+        <div class="b b-6 rv">
+          <div class="b-label">How I Build</div>
+          <div class="proc">
+            <div class="proc-i"><div class="proc-n">01</div><div><h4>Listen deeply</h4><p>Users, data, policy, risk, competitive landscape</p></div></div>
+            <div class="proc-i"><div class="proc-n">02</div><div><h4>Frame the problem</h4><p>Hypotheses, bets, success criteria, constraints</p></div></div>
+            <div class="proc-i"><div class="proc-n">03</div><div><h4>Align the org</h4><p>Legal, design, engineering, business, marketing, PR</p></div></div>
+            <div class="proc-i"><div class="proc-n">04</div><div><h4>Ship with craft</h4><p>Fast, safe, iterative, obsessed with the details</p></div></div>
+            <div class="proc-i"><div class="proc-n">05</div><div><h4>Measure &amp; scale</h4><p>Growth loops, trust metrics, platform, GTM</p></div></div>
+          </div>
+        </div>
+        <div class="b b-6 rv">
+          <div class="b-label">Building &middot; 2025</div>
+          <h3>SquadUp</h3>
+          <p style="margin-top:8px">Kid-first LFG platform for safe community. Think "Discord for Kids"&mdash;real friendships, digital citizenship, multi-million ARR opportunity.</p>
+        </div>
+        <div class="b b-6 rv">
+          <div class="b-label">Sold &middot; 2006</div>
+          <h3>NewsReactor</h3>
+          <p style="margin-top:8px">Bootstrapped to 15K monthly visits and 5K community users. Successful exit. First proof I could build, grow, and sell a product from zero.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="quote-block rv">
+    <blockquote>Let's build <em>what matters</em>.</blockquote>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-strip">
+    <div class="footer-links">
+      <div class="footer-link"><span>Email</span><a href="mailto:mike@mikemongeau.com">mike@mikemongeau.com</a></div>
+      <div class="footer-link"><span>LinkedIn</span><a href="https://linkedin.com/in/mikemongeau">linkedin.com/in/mikemongeau</a></div>
+      <div class="footer-link"><span>Phone</span><a href="tel:7632349932">763-234-9932</a></div>
+      <div class="footer-link"><span>Location</span><a href="#">Seattle, WA</a></div>
+      <div class="footer-link"><span>Resume</span><a href="Resume.pdf">Download PDF</a></div>
+    </div>
+    <div class="footer-copy">&copy; 2025 Mike Mongeau</div>
+  </div>
+</footer>
+
+<script>
+// Glow follows mouse
+const g = document.getElementById('glow');
+addEventListener('mousemove', e => { g.style.left = e.clientX+'px'; g.style.top = e.clientY+'px'; });
+
+// Reveal
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.15 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+// Counter
+const co = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting || e.target.dataset.done) return;
+    e.target.dataset.done = '1';
+    const el = e.target, to = parseFloat(el.dataset.to),
+          p = el.dataset.p||'', s = el.dataset.s||'', d = parseInt(el.dataset.d)||0,
+          dur = 1400, st = performance.now();
+    (function tick(now) {
+      const t = Math.min((now-st)/dur, 1), v = (to * (1-Math.pow(1-t,3))).toFixed(d);
+      el.textContent = p+v+s;
+      if (t<1) requestAnimationFrame(tick);
+    })(st);
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('[data-to]').forEach(el => co.observe(el));
+</script>
+</body>
+</html>

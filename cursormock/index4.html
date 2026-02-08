@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mike Mongeau</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#eeeeeb;--white:#fff;--black:#0a0a0a;
+      --border:3px solid var(--black);
+      --r:20px;--r-sm:12px;--r-pill:100px;
+      --teal:#00c9a7;--yellow:#ffd23f;--blue:#3b82f6;
+      --magenta:#e91e8c;--purple:#8b5cf6;--coral:#ff6b6b;
+      --orange:#f97316;--dim:#71717a;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--black);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:inherit;text-decoration:none}
+
+    .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+
+    /* ═══ NAV ═══ */
+    nav{position:sticky;top:12px;z-index:100;margin:12px 24px 0;background:var(--white);border:var(--border);border-radius:var(--r);padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+    .nav-logo{font-size:16px;font-weight:900;letter-spacing:-0.02em}
+    .nav-links{display:flex;gap:24px}
+    .nav-links a{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.15s}
+    .nav-links a:hover{color:var(--magenta)}
+
+    /* ═══ HERO ═══ */
+    .hero{padding:clamp(80px,12vh,140px) 0 0}
+    .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(40px,5vw,80px);align-items:center}
+    .hero-left{}
+    .hero-badge{display:inline-block;padding:5px 16px;border:2px solid var(--yellow);border-radius:var(--r-pill);font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px;background:rgba(255,210,63,0.1)}
+    .hero h1{font-size:clamp(48px,7vw,88px);font-weight:900;letter-spacing:-0.05em;line-height:0.92}
+    .hero h1 .blue{color:var(--blue)}
+    .hero-tagline{margin-top:16px;font-size:18px;font-weight:700;letter-spacing:-0.01em}
+    .hero-tagline .sticker{
+      display:inline-block;background:var(--magenta);color:#fff;
+      padding:4px 12px 5px;font-weight:800;
+      transform:rotate(-2deg);
+      border-radius:4px;
+      box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+      position:relative;top:-1px;
+    }
+    .hero-ctas{margin-top:28px;display:flex;gap:10px;align-items:center}
+    .cta-primary{padding:14px 28px;background:var(--black);color:#fff;border:var(--border);border-radius:var(--r-pill);font-size:13px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;transition:transform 0.15s}
+    .cta-primary:hover{transform:scale(1.03)}
+    .cta-primary svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2}
+    .cta-icon{width:44px;height:44px;border:var(--border);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;background:var(--white);transition:background 0.15s}
+    .cta-icon:hover{background:var(--bg)}
+    .cta-icon svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:2}
+
+    /* Hero image card */
+    .hero-img-card{border:var(--border);border-radius:var(--r);overflow:hidden;position:relative;background:var(--black);box-shadow:8px 8px 0 var(--magenta)}
+    .hero-img-card img{width:100%;display:block;image-rendering:auto}
+
+    /* ═══ STATS ROW ═══ */
+    .stats{padding:clamp(48px,6vh,80px) 0}
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .stat-card{border:var(--border);border-radius:var(--r);padding:28px 24px;text-align:center}
+    .stat-card:nth-child(1){background:var(--teal)}
+    .stat-card:nth-child(2){background:var(--yellow)}
+    .stat-card:nth-child(3){background:var(--blue);color:#fff}
+    .stat-val{font-size:clamp(36px,5vw,56px);font-weight:900;letter-spacing:-0.04em;line-height:1}
+    .stat-lbl{margin-top:6px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;opacity:0.7}
+
+    /* ═══ SECTION HEADER ═══ */
+    .sec{padding:clamp(64px,8vh,100px) 0}
+    .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:40px}
+    .sec-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+    .sec-num-1{background:var(--coral)}
+    .sec-num-2{background:var(--blue)}
+    .sec-num-3{background:var(--purple)}
+    .sec-num-4{background:var(--teal)}
+    .sec-title{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-0.04em}
+
+    /* ═══ EXPERIENCE CARDS ═══ */
+    .exp-stack{display:flex;flex-direction:column;gap:20px}
+    .exp-card{border:var(--border);border-radius:var(--r);padding:32px 36px;display:grid;grid-template-columns:240px 1fr;gap:28px;position:relative;overflow:hidden}
+    .exp-card:nth-child(1){background:var(--white)}
+    .exp-card:nth-child(2){background:var(--yellow)}
+    .exp-card:nth-child(3){background:#2a2a2a;color:#fff}
+    .exp-company{font-size:clamp(32px,4vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:1}
+    .exp-role{font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--magenta);margin-top:8px}
+    .exp-card:nth-child(3) .exp-role{color:var(--teal)}
+    .exp-quote{margin-top:14px;font-size:15px;font-weight:700;line-height:1.35}
+    .exp-date{position:absolute;top:20px;right:20px;padding:6px 14px;border:2px solid;border-radius:var(--r-pill);font-size:11px;font-weight:800;letter-spacing:0.04em}
+    .exp-card:nth-child(1) .exp-date{border-color:var(--black)}
+    .exp-card:nth-child(2) .exp-date{border-color:var(--black)}
+    .exp-card:nth-child(3) .exp-date{border-color:var(--blue);color:var(--blue)}
+    .exp-bullets{display:flex;flex-direction:column;gap:12px;padding-top:8px}
+    .exp-bullet{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.45}
+    .exp-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--teal)}
+    .exp-card:nth-child(3) .exp-dot{border-color:var(--teal)}
+
+    /* ═══ ABSTRACT SVG DECORATIONS ═══ */
+    .deco{pointer-events:none}
+    .deco-hero{position:absolute;top:-20px;right:-20px;width:120px;height:120px;opacity:0.08}
+
+    /* ═══ NOW CARD ═══ */
+    .now-card{border:var(--border);border-radius:var(--r);padding:40px;background:var(--black);color:#fff;position:relative;overflow:hidden}
+    .now-label{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);margin-bottom:16px}
+    .now-card h3{font-size:clamp(24px,3.5vw,36px);font-weight:900;letter-spacing:-0.03em;line-height:1.12;margin-bottom:14px;max-width:600px}
+    .now-card p{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:560px}
+    .now-tags{margin-top:20px;display:flex;gap:6px;flex-wrap:wrap}
+    .nt{padding:6px 14px;font-size:11px;font-weight:700;border:2px solid rgba(255,255,255,0.12);border-radius:var(--r-pill)}
+    .nt-aw{border-color:var(--magenta);color:var(--magenta)}
+    /* Abstract SVG in corner */
+    .now-deco{position:absolute;top:0;right:0;width:240px;height:240px;opacity:0.06}
+
+    /* ═══ PROJECTS ═══ */
+    .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .proj-card{border:var(--border);border-radius:var(--r);padding:32px;position:relative;overflow:hidden}
+    .proj-card:nth-child(1){background:var(--teal);color:var(--black)}
+    .proj-card:nth-child(2){background:var(--purple);color:#fff}
+    .proj-tag{font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;opacity:0.6;margin-bottom:12px}
+    .proj-card h3{font-size:24px;font-weight:900;letter-spacing:-0.02em;margin-bottom:8px}
+    .proj-card p{font-size:13px;opacity:0.7;line-height:1.6}
+
+    /* ═══ CONTACT CARD ═══ */
+    .contact-card{border:var(--border);border-radius:24px;padding:clamp(36px,5vw,64px);background:var(--teal);color:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;position:relative;overflow:hidden}
+    .contact-card h2{font-size:clamp(40px,6vw,72px);font-weight:900;letter-spacing:-0.05em;line-height:0.95}
+    .contact-info{display:flex;flex-direction:column;gap:14px}
+    .ci{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
+    .ci-icon{width:36px;height:36px;border-radius:10px;border:2px solid var(--black);background:var(--white);display:flex;align-items:center;justify-content:center}
+    .ci-icon svg{width:16px;height:16px;stroke:var(--black);fill:none;stroke-width:2}
+    .contact-actions{display:flex;flex-direction:column;gap:10px}
+    .contact-btn{padding:16px 28px;background:var(--black);color:#fff;border:var(--border);border-radius:var(--r);font-size:14px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;transition:transform 0.15s}
+    .contact-btn:hover{transform:scale(1.02)}
+    .contact-btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5}
+    .contact-sub{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .contact-sub-item{padding:14px;background:var(--white);border:2px solid var(--black);border-radius:var(--r-sm);text-align:center}
+    .contact-sub-item span{display:block;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4;margin-bottom:2px}
+    .contact-sub-item strong{font-size:13px;font-weight:700}
+
+    /* ═══ FOOTER ═══ */
+    .footer{padding:24px;text-align:center;font-size:11px;color:var(--dim)}
+
+    /* ═══ REVEAL ═══ */
+    .rv{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease}
+    .rv.on{opacity:1;transform:none}
+
+    @media(max-width:768px){
+      .hero-grid{grid-template-columns:1fr}
+      .exp-card{grid-template-columns:1fr}
+      .proj-grid{grid-template-columns:1fr}
+      .contact-card{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:1fr}
+      .nav-links{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MIKE M.</div>
+  <div class="nav-links">
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero rv">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-badge">Available for building 2026</div>
+        <h1>MIKE<br><span class="blue">MONGEAU</span></h1>
+        <div class="hero-tagline">Product Leader &times; <span class="sticker">Builds What Matters</span></div>
+        <div class="hero-ctas">
+          <a href="mailto:mike@mikemongeau.com" class="cta-primary">
+            Let's build together
+            <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/mikemongeau" class="cta-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="mailto:mike@mikemongeau.com" class="cta-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="hero-img-card">
+        <img src="hero-pixel.jpg" alt="Mike Mongeau" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 600 500%22><rect fill=%22%230f0a1e%22 width=%22600%22 height=%22500%22/><rect y=%2260%22 width=%22600%22 height=%2240%22 fill=%22%232d1b69%22 opacity=%22.6%22/><rect y=%22100%22 width=%22600%22 height=%2235%22 fill=%22%235b21b6%22 opacity=%22.4%22/><rect y=%22135%22 width=%22600%22 height=%2230%22 fill=%22%23d926a9%22 opacity=%22.25%22/><rect y=%22165%22 width=%22600%22 height=%2240%22 fill=%22%23ff2d78%22 opacity=%22.15%22/><rect y=%22205%22 width=%22600%22 height=%2240%22 fill=%22%23f97316%22 opacity=%22.12%22/><polygon points=%220,400 100,300 200,340 350,260 500,320 600,280 600,500 0,500%22 fill=%22%231a0e30%22/><polygon points=%220,430 150,350 300,390 450,320 600,370 600,500 0,500%22 fill=%22%2314102a%22/><polygon points=%220,460 200,400 400,430 600,390 600,500 0,500%22 fill=%22%230f0a1e%22/><rect y=%22460%22 width=%22600%22 height=%2240%22 fill=%22%230a0a0a%22/></svg>';">
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats rv">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val">+21%</div><div class="stat-lbl">MAU Growth / Xbox Family</div></div>
+      <div class="stat-card"><div class="stat-val">1.3M</div><div class="stat-lbl">Paid Seats Added / M365</div></div>
+      <div class="stat-card"><div class="stat-val">$32M</div><div class="stat-lbl">ARR Feature Shaped</div></div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="sec" id="experience">
+    <div class="sec-head rv">
+      <div class="sec-num sec-num-1">01</div>
+      <div class="sec-title">Experience</div>
+    </div>
+
+    <!-- NOW: K-ID -->
+    <div class="now-card rv" style="margin-bottom:20px">
+      <svg class="now-deco" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="24" height="24" fill="#d926a9"/><rect x="52" y="20" width="24" height="24" fill="#f97316"/><rect x="84" y="20" width="24" height="24" fill="#00c9a7"/>
+        <rect x="20" y="52" width="24" height="24" fill="#3b82f6"/><rect x="52" y="52" width="24" height="24" fill="#ffd23f"/><rect x="84" y="52" width="24" height="24" fill="#8b5cf6"/>
+        <rect x="20" y="84" width="24" height="24" fill="#ff6b6b"/><rect x="52" y="84" width="24" height="24" fill="#d926a9"/><rect x="84" y="84" width="24" height="24" fill="#3b82f6"/>
+        <rect x="116" y="20" width="24" height="24" fill="#ffd23f"/><rect x="148" y="20" width="24" height="24" fill="#ff6b6b"/>
+        <rect x="116" y="52" width="24" height="24" fill="#00c9a7"/><rect x="148" y="52" width="24" height="24" fill="#f97316"/>
+        <rect x="116" y="84" width="24" height="24" fill="#ffd23f"/><rect x="148" y="84" width="24" height="24" fill="#8b5cf6"/>
+        <rect x="20" y="116" width="24" height="24" fill="#f97316"/><rect x="52" y="116" width="24" height="24" fill="#3b82f6"/>
+        <rect x="84" y="116" width="24" height="24" fill="#00c9a7"/><rect x="116" y="116" width="24" height="24" fill="#d926a9"/>
+      </svg>
+      <div class="now-label">Current &middot; Sep 2025</div>
+      <h3>Head of Product at K-ID. Building the compliance backbone of the internet.</h3>
+      <p>Leading product, design, and research. Shipped age verification for Snap, Discord, Twitch, Hasbro, Konami, Supercell. Meta adopted our AgeKey standards.</p>
+      <div class="now-tags">
+        <span class="nt nt-aw">TIME Best Inventions 2025</span>
+        <span class="nt nt-aw">Fast Company Next Big Thing</span>
+        <span class="nt">6.3M users</span>
+        <span class="nt">5x growth</span>
+        <span class="nt">2x MRR</span>
+      </div>
+    </div>
+
+    <!-- THE ARC — narrative storytelling -->
+    <div class="sec-head rv" style="margin-top:48px">
+      <div class="sec-num sec-num-3">02</div>
+      <div class="sec-title">The Arc</div>
+    </div>
+    <p class="rv" style="font-size:18px;font-weight:700;letter-spacing:-0.01em;max-width:600px;margin-bottom:24px;line-height:1.4;">I didn't study product management. I lived it — from the frontline up. 19 years. Three chapters.</p>
+
+    <div class="exp-stack rv">
+      <div class="exp-card">
+        <div class="exp-date" style="border-color:var(--magenta);color:var(--magenta)">2022 — Now</div>
+        <div>
+          <div class="exp-company">PHASE 3</div>
+          <div class="exp-role">Leading product for trust at scale</div>
+          <div class="exp-quote">The first two phases gave me the instincts. This one gave me the wheel. At Xbox, I shaped a $32M ARR feature and created safer play for millions of families — aligning Legal, PR, Marketing, and Engineering around a shared mission. At K-ID, I took those instincts to a startup and won TIME Best Inventions. I learned that trust isn't a feature. It's the product.</div>
+        </div>
+        <div class="exp-bullets">
+          <div class="exp-bullet"><span class="exp-dot">+</span>Xbox · Principal Product Lead</div>
+          <div class="exp-bullet"><span class="exp-dot">+</span>K-ID · Head of Product</div>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="exp-date" style="border-color:var(--blue);color:var(--blue)">2017 — 2022</div>
+        <div>
+          <div class="exp-company">PHASE 2</div>
+          <div class="exp-role">Turned support into growth. AI into seats.</div>
+          <div class="exp-quote">I stopped treating support as a cost center and reframed it as a growth engine. Used AI to grow 1.3M paid seats. Scaled customer discovery to 700+ stakeholders. Shipped the highest-performing support program at Microsoft. This is where I learned that the best product leaders don't just listen to customers — they build systems that listen at scale.</div>
+        </div>
+        <div class="exp-bullets">
+          <div class="exp-bullet"><span class="exp-dot" style="border-color:var(--blue);color:var(--blue)">+</span>Microsoft 365 · Senior Product Manager</div>
+          <div class="exp-bullet"><span class="exp-dot" style="border-color:var(--blue);color:var(--blue)">+</span>Windows · Senior Program Manager</div>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="exp-date" style="border-color:var(--yellow);color:var(--black)">2006 — 2017</div>
+        <div>
+          <div class="exp-company" style="font-size:clamp(24px,3vw,36px)">PHASE 1</div>
+          <div class="exp-role" style="color:var(--teal)">Built empathy from the ground up</div>
+          <div class="exp-quote">I started where the problems are loudest: frontline support. Talked to thousands of real customers. Reduced incidents by 58%. Hacked SharePoint security to prove a point. Got hired by Microsoft before finishing my degree. This decade taught me that every great product instinct starts with listening — really listening — to people in pain.</div>
+        </div>
+        <div class="exp-bullets">
+          <div class="exp-bullet"><span class="exp-dot" style="border-color:var(--teal);color:var(--teal)">+</span>Windows · SharePoint · Windows Phone</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="sec" id="projects">
+    <div class="sec-head rv">
+      <div class="sec-num sec-num-2">02</div>
+      <div class="sec-title">Projects</div>
+    </div>
+    <div class="proj-grid rv">
+      <div class="proj-card">
+        <div class="proj-tag">Building 2025</div>
+        <h3>SquadUp</h3>
+        <p>Kid-first platform for safe community. Real friendships, digital citizenship. Assembling the founding team.</p>
+      </div>
+      <div class="proj-card">
+        <div class="proj-tag">Sold 2006</div>
+        <h3>NewsReactor</h3>
+        <p>Bootstrapped to 15K monthly visits. 5K community. Successful exit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sec" id="contact">
+    <div class="contact-card rv">
+      <div>
+        <h2>READY<br>TO<br>BUILD?</h2>
+        <div class="contact-info" style="margin-top:24px">
+          <div class="ci">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg></div>
+            mike@mikemongeau.com
+          </div>
+          <div class="ci">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+            763-234-9932
+          </div>
+        </div>
+      </div>
+      <div class="contact-actions">
+        <a href="mailto:mike@mikemongeau.com" class="contact-btn">
+          Start conversation
+          <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M7 17l9.2-9.2M17 17V7.8H7.8"/></svg>
+        </a>
+        <div class="contact-sub">
+          <div class="contact-sub-item"><span>Location</span><strong>Seattle, WA</strong></div>
+          <a href="https://linkedin.com/in/mikemongeau" class="contact-sub-item"><span>LinkedIn</span><strong>mikemongeau</strong></a>
+        </div>
+        <a href="Resume.pdf" class="contact-btn" style="background:var(--white);color:var(--black);border-color:var(--black)">
+          Download resume
+          <svg viewBox="0 0 24 24" stroke="var(--black)" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">Mike Mongeau &middot; Seattle, WA &middot; 2025</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:0.06});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

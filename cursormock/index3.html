@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mike Mongeau</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --deep:#0f0a1e;--purple:#2d1b69;--violet:#5b21b6;
+      --magenta:#d926a9;--hot:#ff2d78;--orange:#f97316;
+      --amber:#fbbf24;--teal:#0d9488;--sky:#38bdf8;
+      --peak:#1a0e2e;--mid:#14102a;
+      --white:#fafaf9;--black:#0a0a0a;--dim:rgba(255,255,255,0.45);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--black);color:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    ::selection{background:rgba(217,38,169,0.3)}
+
+    /* ═══ HERO ═══ */
+    .hero{position:relative;min-height:100dvh;display:flex;align-items:flex-end;overflow:hidden}
+    .hero-scene{position:absolute;inset:0;overflow:hidden}
+    .hero-scene svg{position:absolute;bottom:0;left:0;width:100%;height:100%}
+    .hero-content{position:relative;z-index:10;padding:0 clamp(32px,6vw,96px) clamp(48px,8vh,80px);width:100%}
+    .hero h1{font-size:clamp(32px,5.5vw,64px);font-weight:900;letter-spacing:-0.04em;line-height:1.08;max-width:640px}
+    .hero-sub{margin-top:12px;font-size:14px;color:var(--dim);max-width:420px;line-height:1.6}
+    .hero-actions{margin-top:28px;display:flex;gap:8px}
+    .btn{padding:10px 22px;font-size:13px;font-weight:700;border:2px solid rgba(255,255,255,0.2);transition:border-color 0.15s}
+    .btn:hover{border-color:rgba(255,255,255,0.6)}
+    .btn-fill{background:#fff;color:var(--black);border-color:#fff}
+    .btn-fill:hover{opacity:0.9;border-color:#fff}
+
+    /* ═══ SECTIONS ═══ */
+    .sec{padding:clamp(56px,10vh,100px) clamp(32px,6vw,96px)}
+    .sec-label{font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:28px;opacity:0.4}
+
+    /* ═══ THINK CARDS ═══ */
+    .think{background:var(--deep)}
+    .think-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px}
+    .think-card{border-left:4px solid;padding:20px 24px;background:rgba(255,255,255,0.03)}
+    .think-card:nth-child(1){border-color:var(--magenta)}
+    .think-card:nth-child(2){border-color:var(--orange)}
+    .think-card:nth-child(3){border-color:var(--teal)}
+    .think-card:nth-child(4){border-color:var(--sky)}
+    .think-card h3{font-size:15px;font-weight:800;line-height:1.35;margin-bottom:6px}
+    .think-card p{font-size:12px;color:var(--dim);line-height:1.5}
+
+    /* ═══ MOUNTAIN CHART (numbers) ═══ */
+    .receipts{background:var(--white);color:var(--black)}
+    .receipts .sec-label{color:var(--black)}
+    .chart-wrap{max-width:860px;position:relative}
+    .chart-row{display:flex;align-items:flex-end;gap:4px;height:200px;margin-bottom:16px}
+    .chart-bar{flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+    .chart-bar-fill{width:100%;transition:height 0.8s cubic-bezier(.22,1,.36,1)}
+    .chart-bar:nth-child(1) .chart-bar-fill{background:var(--purple)}
+    .chart-bar:nth-child(2) .chart-bar-fill{background:var(--magenta)}
+    .chart-bar:nth-child(3) .chart-bar-fill{background:var(--orange)}
+    .chart-bar:nth-child(4) .chart-bar-fill{background:var(--teal)}
+    .chart-bar:nth-child(5) .chart-bar-fill{background:var(--hot)}
+    .chart-val{position:absolute;top:-32px;font-size:20px;font-weight:900;letter-spacing:-0.02em}
+    .chart-bar:nth-child(1) .chart-val{color:var(--purple)}
+    .chart-bar:nth-child(2) .chart-val{color:var(--magenta)}
+    .chart-bar:nth-child(3) .chart-val{color:var(--orange)}
+    .chart-bar:nth-child(4) .chart-val{color:var(--teal)}
+    .chart-bar:nth-child(5) .chart-val{color:var(--hot)}
+    .chart-lbl{margin-top:10px;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#999;text-align:center}
+
+    /* ═══ TRAIL (career arc) ═══ */
+    .arc{background:var(--peak);position:relative;overflow:hidden}
+    .arc-scene{position:absolute;inset:0;pointer-events:none}
+    .arc-scene svg{width:100%;height:100%;position:absolute;bottom:0;left:0}
+    .arc-content{position:relative;z-index:2;max-width:860px}
+    .arc-intro{font-size:clamp(20px,3vw,30px);font-weight:800;letter-spacing:-0.03em;line-height:1.25;margin-bottom:40px;max-width:520px}
+    .trail{display:flex;flex-direction:column;gap:0;position:relative;padding-left:32px}
+    .trail::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--magenta),var(--orange),var(--teal))}
+    .wp{position:relative;padding:20px 0 28px 24px}
+    .wp::before{content:'';position:absolute;left:-26px;top:24px;width:14px;height:14px;border:3px solid;background:var(--peak)}
+    .wp:nth-child(1)::before{border-color:var(--magenta)}
+    .wp:nth-child(2)::before{border-color:var(--orange)}
+    .wp:nth-child(3)::before{border-color:var(--teal)}
+    .wp:first-child::before{background:var(--magenta);box-shadow:0 0 12px rgba(217,38,169,0.5)}
+    .wp-year{font-size:11px;font-weight:700;color:var(--dim);letter-spacing:0.04em;margin-bottom:6px}
+    .wp h3{font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.25;margin-bottom:6px}
+    .wp p{font-size:13px;color:var(--dim);line-height:1.6;max-width:480px}
+    .wp-orgs{margin-top:10px;display:flex;gap:4px;flex-wrap:wrap}
+    .wp-org{padding:2px 8px;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.1);color:var(--dim)}
+
+    /* ═══ STATEMENT ═══ */
+    .stmt{background:var(--magenta);padding:clamp(48px,8vh,96px) clamp(32px,6vw,96px)}
+    .stmt-text{font-size:clamp(24px,4.5vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:1.1;max-width:740px}
+
+    /* ═══ NOW ═══ */
+    .now{background:var(--black);position:relative;overflow:hidden}
+    .now-scene{position:absolute;right:0;top:0;width:50%;height:100%;pointer-events:none}
+    .now-scene svg{width:100%;height:100%}
+    .now-content{position:relative;z-index:2;max-width:560px}
+    .now-label{font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:20px}
+    .now h3{font-size:clamp(22px,3.5vw,36px);font-weight:900;letter-spacing:-0.03em;line-height:1.12;margin-bottom:14px}
+    .now p{font-size:14px;color:var(--dim);line-height:1.7}
+    .now-tags{margin-top:20px;display:flex;gap:6px;flex-wrap:wrap}
+    .nt{padding:5px 12px;font-size:11px;font-weight:700;border:2px solid rgba(255,255,255,0.08)}
+    .nt-aw{border-color:var(--magenta);color:var(--magenta)}
+
+    /* ═══ QUOTE ═══ */
+    .qt{background:var(--deep);display:flex;align-items:center;min-height:40vh}
+    .qt-inner{border-left:5px solid var(--amber);padding-left:24px;max-width:540px}
+    .qt blockquote{font-size:clamp(17px,2.2vw,24px);font-weight:700;line-height:1.4;font-style:italic}
+    .qt cite{display:block;margin-top:10px;font-size:11px;font-style:normal;opacity:0.3}
+
+    /* ═══ PROJECTS ═══ */
+    .bld{background:var(--purple)}
+    .bld-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px}
+    .bld-card{border-left:4px solid;padding:24px;background:rgba(255,255,255,0.05)}
+    .bld-card:nth-child(1){border-color:var(--teal)}
+    .bld-card:nth-child(2){border-color:var(--amber)}
+    .bld-tag{font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;opacity:0.4;margin-bottom:10px}
+    .bld-card h3{font-size:18px;font-weight:800;margin-bottom:6px;letter-spacing:-0.01em}
+    .bld-card p{font-size:12px;color:var(--dim);line-height:1.6}
+
+    /* ═══ CONTACT ═══ */
+    .contact{background:var(--black)}
+    .contact h2{font-size:clamp(28px,5vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:1.05;margin-bottom:8px}
+    .contact .sub{font-size:14px;opacity:0.3;margin-bottom:32px}
+    .c-row{display:flex;gap:32px;flex-wrap:wrap}
+    .c-item{display:flex;flex-direction:column;gap:3px}
+    .c-item span{font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;opacity:0.25}
+    .c-item a{font-size:13px;font-weight:600;opacity:0.5;transition:opacity 0.15s}
+    .c-item a:hover{opacity:1}
+
+    .footer{padding:20px clamp(32px,6vw,96px);font-size:11px;opacity:0.15;border-top:1px solid rgba(255,255,255,0.04)}
+
+    /* ═══ REVEAL ═══ */
+    .rv{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease}
+    .rv.on{opacity:1;transform:none}
+
+    @media(max-width:700px){
+      .think-grid,.bld-grid{grid-template-columns:1fr}
+      .chart-row{height:140px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HERO: Custom SVG mountain landscape ═══ -->
+<section class="hero">
+  <div class="hero-scene">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sky bands (inspired by pixel art sky) -->
+      <rect width="1440" height="900" fill="#0f0a1e"/>
+      <rect y="0" width="1440" height="180" fill="#1a0e30"/>
+      <rect y="0" width="1440" height="80" fill="#0d0820"/>
+
+      <!-- Color sky bands - hard edge cuts -->
+      <rect y="80" width="1440" height="60" fill="#2d1b69" opacity="0.7"/>
+      <rect y="140" width="1440" height="50" fill="#5b21b6" opacity="0.5"/>
+      <rect y="190" width="1440" height="40" fill="#7c3aed" opacity="0.35"/>
+      <rect y="230" width="1440" height="50" fill="#d926a9" opacity="0.25"/>
+      <rect y="280" width="1440" height="60" fill="#ff2d78" opacity="0.2"/>
+      <rect y="340" width="1440" height="60" fill="#f97316" opacity="0.15"/>
+      <rect y="400" width="1440" height="60" fill="#fbbf24" opacity="0.1"/>
+
+      <!-- Stars -->
+      <circle cx="120" cy="60" r="1.5" fill="#fff" opacity="0.6"/>
+      <circle cx="340" cy="30" r="1" fill="#fff" opacity="0.4"/>
+      <circle cx="580" cy="80" r="1.5" fill="#fff" opacity="0.5"/>
+      <circle cx="760" cy="20" r="1" fill="#fff" opacity="0.3"/>
+      <circle cx="950" cy="55" r="1.5" fill="#fff" opacity="0.6"/>
+      <circle cx="1100" cy="35" r="1" fill="#fff" opacity="0.4"/>
+      <circle cx="1280" cy="70" r="1.5" fill="#fff" opacity="0.5"/>
+      <circle cx="200" cy="120" r="1" fill="#fff" opacity="0.3"/>
+      <circle cx="870" cy="100" r="1" fill="#fff" opacity="0.35"/>
+      <circle cx="1350" cy="40" r="1" fill="#fff" opacity="0.4"/>
+      <circle cx="450" cy="150" r="1" fill="#38bdf8" opacity="0.4"/>
+      <circle cx="1000" cy="130" r="1" fill="#d926a9" opacity="0.3"/>
+
+      <!-- Distant mountains (back layer) -->
+      <polygon points="0,650 200,420 400,520 600,380 800,480 1000,350 1200,450 1440,400 1440,900 0,900" fill="#1a0e30"/>
+
+      <!-- Mid mountains -->
+      <polygon points="0,700 150,520 350,600 500,470 700,560 900,440 1050,530 1200,460 1440,520 1440,900 0,900" fill="#14102a"/>
+
+      <!-- Foreground mountains with color tints -->
+      <polygon points="0,750 100,600 250,680 400,560 550,640 650,550 800,630 950,540 1100,610 1250,550 1440,620 1440,900 0,900" fill="#0f0a1e"/>
+
+      <!-- Summit peak (where the figure stands) -->
+      <polygon points="580,480 650,550 720,480 750,520 690,560 650,540 610,560 560,520" fill="#1a0e30"/>
+      <polygon points="620,500 650,540 680,500 700,520 660,550 650,545 640,550 600,520" fill="#14102a"/>
+
+      <!-- Figure silhouette on the peak -->
+      <g transform="translate(647, 468)">
+        <!-- Body -->
+        <rect x="-2" y="0" width="4" height="16" fill="#0a0a0a"/>
+        <!-- Head -->
+        <circle cx="0" cy="-4" r="4" fill="#0a0a0a"/>
+        <!-- Arms -->
+        <line x1="-6" y1="4" x2="-2" y2="8" stroke="#0a0a0a" stroke-width="2.5"/>
+        <line x1="6" y1="4" x2="2" y2="8" stroke="#0a0a0a" stroke-width="2.5"/>
+        <!-- Legs -->
+        <line x1="-4" y1="18" x2="-1" y2="12" stroke="#0a0a0a" stroke-width="2.5"/>
+        <line x1="4" y1="18" x2="1" y2="12" stroke="#0a0a0a" stroke-width="2.5"/>
+        <!-- Backpack hint -->
+        <rect x="2" y="2" width="5" height="8" rx="1" fill="#1a0e30"/>
+      </g>
+
+      <!-- Atmospheric glow behind figure -->
+      <circle cx="650" cy="460" r="80" fill="#d926a9" opacity="0.04"/>
+      <circle cx="650" cy="440" r="120" fill="#f97316" opacity="0.03"/>
+
+      <!-- Foreground dark base -->
+      <rect y="750" width="1440" height="200" fill="#0a0a0a"/>
+      <polygon points="0,740 200,760 400,730 600,755 800,725 1000,750 1200,720 1440,745 1440,770 0,770" fill="#0a0a0a"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <h1 class="rv">I build products that earn trust at scale.</h1>
+    <p class="hero-sub rv">Head of Product. 19 years shipping. Microsoft, Xbox, K-ID.</p>
+    <div class="hero-actions rv">
+      <a href="mailto:mike@mikemongeau.com" class="btn btn-fill">Get in touch</a>
+      <a href="Resume.pdf" class="btn">Resume</a>
+      <a href="https://linkedin.com/in/mikemongeau" class="btn">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW I THINK ═══ -->
+<section class="sec think">
+  <div class="sec-label rv">How I Think</div>
+  <div class="think-grid rv">
+    <div class="think-card"><h3>If you wrote that PRD before talking to a user, it's not a spec. It's a story you made up.</h3><p>Discovery doesn't polish ideas. It buries the wrong ones -- fast.</p></div>
+    <div class="think-card"><h3>Capacity doesn't stretch. It trades.</h3><p>Every yes is a silent no. The only question is whether you saw it leave.</p></div>
+    <div class="think-card"><h3>The only real freedom: choosing your attitude when you can't choose your reality.</h3><p>Your power to respond is limitless. Your power to control what happens is zero.</p></div>
+    <div class="think-card"><h3>Ship the version that embarrasses you.</h3><p>If it doesn't make you wince, you launched too late.</p></div>
+  </div>
+</section>
+
+<!-- ═══ THE RECEIPTS: Mountain bar chart ═══ -->
+<section class="sec receipts">
+  <div class="sec-label rv">The Receipts</div>
+  <div class="chart-wrap rv">
+    <div class="chart-row" id="chart">
+      <div class="chart-bar"><div class="chart-val">5x</div><div class="chart-bar-fill" data-h="65"></div><div class="chart-lbl">Account<br>growth</div></div>
+      <div class="chart-bar"><div class="chart-val">+21%</div><div class="chart-bar-fill" data-h="45"></div><div class="chart-lbl">MAU<br>growth</div></div>
+      <div class="chart-bar"><div class="chart-val">$32M</div><div class="chart-bar-fill" data-h="80"></div><div class="chart-lbl">ARR<br>shaped</div></div>
+      <div class="chart-bar"><div class="chart-val">1.3M</div><div class="chart-bar-fill" data-h="55"></div><div class="chart-lbl">Seats<br>added</div></div>
+      <div class="chart-bar"><div class="chart-val">+266%</div><div class="chart-bar-fill" data-h="90"></div><div class="chart-lbl">Acct<br>creation</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATEMENT ═══ -->
+<section class="stmt">
+  <div class="stmt-text rv">I don't just ship features. I build systems of trust that let people do what matters most.</div>
+</section>
+
+<!-- ═══ THE ARC: Trail illustration ═══ -->
+<section class="sec arc">
+  <div class="arc-scene">
+    <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,600 200,480 400,520 600,450 800,500 1000,400 1200,460 1440,380 1440,600 0,600" fill="#12082a" opacity="0.5"/>
+      <polygon points="0,600 300,520 500,550 700,490 900,530 1100,470 1440,500 1440,600 0,600" fill="#0f0620" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="arc-content">
+    <div class="sec-label rv">The Arc</div>
+    <div class="arc-intro rv">19 years. Three waypoints. One constant: build what matters.</div>
+    <div class="trail rv">
+      <div class="wp">
+        <div class="wp-year">2022 — Now</div>
+        <h3>Leading product for trust at scale.</h3>
+        <p>$32M ARR for Xbox families. TIME Best Inventions. Now building the compliance backbone of the internet at K-ID.</p>
+        <div class="wp-orgs"><span class="wp-org">Xbox</span><span class="wp-org">K-ID</span></div>
+      </div>
+      <div class="wp">
+        <div class="wp-year">2017 — 2022</div>
+        <h3>Turned support into growth. AI into seats.</h3>
+        <p>1.3M paid seats with AI. 700+ stakeholders. Microsoft's highest-performing support program.</p>
+        <div class="wp-orgs"><span class="wp-org">Windows</span><span class="wp-org">M365</span></div>
+      </div>
+      <div class="wp">
+        <div class="wp-year">2006 — 2017</div>
+        <h3>Built empathy from the ground up.</h3>
+        <p>Frontline support to product. Thousands of conversations. Best instincts come from listening.</p>
+        <div class="wp-orgs"><span class="wp-org">Windows</span><span class="wp-org">SharePoint</span><span class="wp-org">Phone</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NOW ═══ -->
+<section class="sec now">
+  <div class="now-scene">
+    <svg viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Shield / trust infrastructure illustration -->
+      <g transform="translate(300,250)" opacity="0.06">
+        <!-- Outer shield -->
+        <path d="M0,-180 L140,-120 L140,60 L0,180 L-140,60 L-140,-120 Z" fill="none" stroke="#d926a9" stroke-width="3"/>
+        <!-- Mid shield -->
+        <path d="M0,-130 L100,-85 L100,40 L0,130 L-100,40 L-100,-85 Z" fill="none" stroke="#f97316" stroke-width="2"/>
+        <!-- Inner shield -->
+        <path d="M0,-80 L60,-52 L60,24 L0,80 L-60,24 L-60,-52 Z" fill="none" stroke="#0d9488" stroke-width="2"/>
+        <!-- Core -->
+        <circle r="20" fill="none" stroke="#fbbf24" stroke-width="2"/>
+        <!-- Connection lines -->
+        <line x1="0" y1="-180" x2="0" y2="-80" stroke="#d926a9" stroke-width="1" opacity="0.5"/>
+        <line x1="140" y1="-120" x2="60" y2="-52" stroke="#d926a9" stroke-width="1" opacity="0.5"/>
+        <line x1="-140" y1="-120" x2="-60" y2="-52" stroke="#d926a9" stroke-width="1" opacity="0.5"/>
+        <line x1="140" y1="60" x2="60" y2="24" stroke="#d926a9" stroke-width="1" opacity="0.5"/>
+        <line x1="-140" y1="60" x2="-60" y2="24" stroke="#d926a9" stroke-width="1" opacity="0.5"/>
+        <line x1="0" y1="180" x2="0" y2="80" stroke="#d926a9" stroke-width="1" opacity="0.5"/>
+      </g>
+    </svg>
+  </div>
+  <div class="now-content">
+    <div class="now-label rv">Now</div>
+    <h3 class="rv">Building the compliance backbone of the internet.</h3>
+    <p class="rv">Head of Product at K-ID. Shipped age verification for Snap, Discord, Twitch, Hasbro, Konami, Supercell. Meta adopted our AgeKey standards.</p>
+    <div class="now-tags rv">
+      <span class="nt nt-aw">TIME Best Inventions 2025</span>
+      <span class="nt nt-aw">Fast Company Next Big Thing</span>
+      <span class="nt">6.3M verified users</span>
+      <span class="nt">5x growth</span>
+      <span class="nt">2x MRR in 3 months</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUOTE ═══ -->
+<section class="sec qt">
+  <div class="qt-inner rv">
+    <blockquote>"How you do anything is how you do everything. And if you do it well, it can be beautiful, no matter what it is."</blockquote>
+    <cite>— Epictetus</cite>
+  </div>
+</section>
+
+<!-- ═══ BUILDING ═══ -->
+<section class="sec bld">
+  <div class="sec-label rv">Building on the Side</div>
+  <div class="bld-grid rv">
+    <div class="bld-card"><div class="bld-tag">Building 2025</div><h3>SquadUp</h3><p>Kid-first platform for safe community. Real friendships, digital citizenship, the space kids deserve.</p></div>
+    <div class="bld-card"><div class="bld-tag">Sold 2006</div><h3>NewsReactor</h3><p>Bootstrapped to 15K monthly visits. 5K community. Successful exit.</p></div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="sec contact">
+  <h2 class="rv">Let's build what matters.</h2>
+  <div class="sub rv">Always open to builders who give a damn.</div>
+  <div class="c-row rv">
+    <div class="c-item"><span>Email</span><a href="mailto:mike@mikemongeau.com">mike@mikemongeau.com</a></div>
+    <div class="c-item"><span>LinkedIn</span><a href="https://linkedin.com/in/mikemongeau">mikemongeau</a></div>
+    <div class="c-item"><span>Phone</span><a href="tel:7632349932">763-234-9932</a></div>
+    <div class="c-item"><span>Resume</span><a href="Resume.pdf">Download PDF</a></div>
+    <div class="c-item"><span>Location</span><a href="#">Seattle, WA</a></div>
+  </div>
+</section>
+
+<footer class="footer">Mike Mongeau — 2025</footer>
+
+<script>
+// Reveals
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:0.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// Animate chart bars
+const cio=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting)return;e.target.querySelectorAll('.chart-bar-fill').forEach((b,i)=>{setTimeout(()=>{b.style.height=b.dataset.h+'%'},i*120)});cio.unobserve(e.target)})},{threshold:0.3});
+const chart=document.getElementById('chart');
+if(chart){chart.querySelectorAll('.chart-bar-fill').forEach(b=>b.style.height='0');cio.observe(chart)}
+</script>
+</body>
+</html>

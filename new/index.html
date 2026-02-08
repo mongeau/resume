@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mike Mongeau — Product Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --blue:#3373FF;--coral:#EE4266;--teal:#2EC4B6;--yellow:#FFD23F;
+      --black:#1A1A1A;--bg:#F8F8F8;
+    }
+
+    html{scroll-behavior:smooth}
+    body{font-family:'Space Grotesk',system-ui,sans-serif;color:var(--black);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden;background:var(--bg)}
+    a{color:inherit;text-decoration:none}
+    ::selection{background:var(--blue);color:#fff}
+
+    /* ═══ BACKGROUND: color bleeds + noise + grid ═══ */
+    .bg-layer{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
+    .bg-blob{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
+    .bg-blob-1{top:-10%;left:-10%;width:60%;height:60%;background:rgba(255,210,63,0.18)}
+    .bg-blob-2{bottom:-10%;right:-10%;width:50%;height:50%;background:rgba(51,115,255,0.12)}
+    .bg-blob-3{top:20%;right:-5%;width:40%;height:40%;background:rgba(238,66,102,0.08)}
+    .bg-blob-4{bottom:20%;left:-5%;width:30%;height:40%;background:rgba(46,196,182,0.08)}
+    .bg-noise{position:absolute;inset:0;opacity:0.35;mix-blend-mode:overlay}
+    .bg-noise svg{width:100%;height:100%}
+    .bg-grid{position:absolute;inset:0;opacity:0.03;background-image:linear-gradient(var(--black) 1px,transparent 1px),linear-gradient(90deg,var(--black) 1px,transparent 1px);background-size:24px 24px}
+
+    /* ═══ NAV: mix-blend-difference ═══ */
+    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:difference}
+    .nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:#fff}
+    .nav-logo{font-size:24px;font-weight:900;letter-spacing:-0.04em}
+    .nav-links{display:flex;gap:32px}
+    .nav-links a{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;opacity:0.8;transition:opacity 0.2s}
+    .nav-links a:hover{opacity:0.5}
+
+    /* ═══ UTILITY ═══ */
+    .wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+    .mb-sec{margin-bottom:clamp(100px,14vh,160px)}
+    .uppercase{text-transform:uppercase}
+    .tracking-tight{letter-spacing:-0.06em}
+    .tracking-wide{letter-spacing:0.4em}
+    .font-black{font-weight:900}
+    .italic{font-style:italic}
+    .text-coral{color:var(--coral)}
+    .text-blue{color:var(--blue)}
+    .text-teal{color:var(--teal)}
+    .text-yellow{color:var(--yellow)}
+    .opacity-40{opacity:0.4}
+    .opacity-60{opacity:0.6}
+
+    /* ═══ HERO ═══ */
+    .hero{padding:clamp(160px,22vh,260px) 0 0;margin-bottom:clamp(100px,14vh,160px)}
+    .avail-badge{display:inline-block;padding:6px 16px;border:2px solid var(--yellow);border-radius:100px;font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;color:var(--black);background:rgba(255,210,63,0.08)}
+    .hero-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.4em;color:var(--coral);margin-bottom:16px}
+    /* Hero CTAs */
+    .hero-cta-primary{display:inline-block;padding:12px 28px;background:var(--black);color:#fff;font-size:13px;font-weight:700;border-radius:10px;text-transform:uppercase;letter-spacing:0.08em;transition:transform 0.15s ease,box-shadow 0.15s ease}
+    .hero-cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+    .hero-cta-secondary{display:inline-block;padding:12px 28px;border:1px solid rgba(0,0,0,0.15);font-size:13px;font-weight:700;border-radius:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(26,26,26,0.5);transition:color 0.15s,border-color 0.15s}
+    .hero-cta-secondary:hover{color:var(--black);border-color:rgba(0,0,0,0.4)}
+    .hero-img{width:120px;height:120px;border-radius:20px;object-fit:cover;box-shadow:0 12px 40px rgba(0,0,0,0.1);transition:transform 0.25s ease}
+    .hero-img:hover{transform:scale(1.05)}
+    .hero h2{font-size:clamp(48px,11vw,160px);font-weight:900;line-height:0.85;letter-spacing:-0.06em;text-transform:uppercase;margin-bottom:48px}
+    .hero h2 .grad{background:linear-gradient(90deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end}
+    .hero-body{font-size:clamp(18px,2.2vw,28px);font-weight:500;line-height:1.45;max-width:560px}
+    .hero-meta{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;opacity:0.3}
+    .hero-meta p{margin-bottom:8px}
+
+    /* ═══ CARDS ═══ */
+    .card{background:#fff;border:1px solid rgba(0,0,0,0.05);border-radius:2.5rem;padding:clamp(32px,4vw,48px);box-shadow:0 25px 50px -12px rgba(0,0,0,0.15);position:relative;overflow:hidden;transition:transform 0.25s ease}
+    .card:hover{transform:translateY(-4px)}
+    .card-orb{position:absolute;top:-20px;right:-20px;width:160px;height:160px;border-radius:50%;filter:blur(60px);transition:opacity 0.3s;opacity:0.05;pointer-events:none}
+    .card:hover .card-orb{opacity:0.1}
+    .card-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.4em;opacity:0.3;margin-bottom:clamp(24px,3vh,32px);display:block}
+    .card h4{font-size:clamp(28px,3vw,40px);font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:16px}
+    .card .lead{font-size:clamp(16px,1.5vw,20px);font-weight:700;line-height:1.4;margin-bottom:16px}
+    .card .body{font-size:14px;color:rgba(26,26,26,0.55);line-height:1.7;max-width:480px}
+    .tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:900;text-transform:uppercase}
+    .tag svg{width:12px;height:12px;flex-shrink:0}
+    .tag img{height:12px;width:auto;filter:brightness(0) invert(1);flex-shrink:0}
+
+    /* ═══ NOW SECTION ═══ */
+    .now-grid{display:grid;grid-template-columns:5fr 7fr;gap:48px}
+    .now-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4em;color:var(--blue);margin-bottom:24px;display:block}
+    .now h3{font-size:clamp(36px,5vw,68px);font-weight:900;line-height:0.95;text-transform:uppercase;margin-bottom:32px}
+    .now-body{font-size:clamp(16px,1.4vw,20px);line-height:1.65;color:rgba(26,26,26,0.65);margin-bottom:32px;max-width:480px}
+    .now-body strong{color:var(--black);font-weight:700}
+    .award-pill{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-size:10px;font-weight:900;text-transform:uppercase;margin-right:8px;margin-bottom:8px}
+    .award-dot{width:6px;height:6px;border-radius:50%}
+    .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .stat-card{padding:clamp(28px,3vw,40px);border-radius:1.75rem;border:1px solid rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:flex-end;min-height:200px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.12);transition:transform 0.25s ease,box-shadow 0.25s ease}
+    .stat-card:hover{transform:translateY(-4px);box-shadow:0 30px 60px -12px rgba(0,0,0,0.18)}
+    .stat-card.bg-white{background:#fff}
+    .stat-card.bg-blue{background:var(--blue);color:#fff}
+    .stat-card.bg-black{background:var(--black);color:#fff}
+    .stat-val{font-size:clamp(32px,3.5vw,44px);font-weight:900;margin-bottom:6px}
+    .stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;line-height:1.3}
+
+    /* ═══ ARC ═══ */
+    .arc-head h3{font-size:clamp(40px,7vw,96px);font-weight:900;text-transform:uppercase;letter-spacing:-0.05em}
+    .arc-head p{font-size:clamp(16px,1.5vw,20px);color:rgba(26,26,26,0.45);font-weight:500}
+
+    /* Vertical trail */
+    .trail{display:flex;flex-direction:column;gap:0;position:relative;padding-left:40px;margin-top:48px;max-width:680px}
+    .trail::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:3px;border-radius:2px;background:linear-gradient(180deg,var(--coral),var(--blue),var(--teal))}
+    .wp{position:relative;padding:0 0 48px 28px}
+    .wp:last-child{padding-bottom:0}
+    .wp-dot{position:absolute;left:-33px;top:4px;width:16px;height:16px;border-radius:50%;border:3px solid;background:var(--bg)}
+    .wp:nth-child(1) .wp-dot{border-color:var(--coral);background:var(--coral);box-shadow:0 0 16px rgba(238,66,102,0.35)}
+    .wp:nth-child(2) .wp-dot{border-color:var(--blue)}
+    .wp:nth-child(3) .wp-dot{border-color:var(--teal)}
+    .wp-year{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;opacity:0.3;margin-bottom:8px}
+    .wp h4{font-size:clamp(20px,2.5vw,28px);font-weight:900;letter-spacing:-0.03em;line-height:1.2;margin-bottom:8px}
+    .wp .wp-lead{font-size:clamp(15px,1.4vw,18px);font-weight:700;line-height:1.4;margin-bottom:10px}
+    .wp .wp-body{font-size:14px;color:rgba(26,26,26,0.5);line-height:1.7;max-width:520px}
+    .wp-tags{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+
+    /* ═══ FLIP PRINCIPLE CARDS ═══ */
+    .principle-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .flip-wrap{perspective:800px;min-height:180px}
+    .flip-card{position:relative;width:100%;height:100%;min-height:180px;transition:transform 0.6s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d;cursor:pointer}
+    .flip-card.flipped{transform:rotateY(180deg)}
+    .flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:1.5rem;padding:clamp(24px,2.5vw,32px);box-shadow:0 12px 40px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.05)}
+    .flip-front{background:#fff;border-left:4px solid;display:flex;flex-direction:column;justify-content:center}
+    .flip-back{background:var(--black);color:#fff;transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;border-left:4px solid}
+    .flip-wrap:nth-child(1) .flip-front,.flip-wrap:nth-child(1) .flip-back{border-left-color:var(--coral)}
+    .flip-wrap:nth-child(2) .flip-front,.flip-wrap:nth-child(2) .flip-back{border-left-color:var(--blue)}
+    .flip-wrap:nth-child(3) .flip-front,.flip-wrap:nth-child(3) .flip-back{border-left-color:var(--teal)}
+    .flip-wrap:nth-child(4) .flip-front,.flip-wrap:nth-child(4) .flip-back{border-left-color:var(--yellow)}
+    .flip-wrap:nth-child(5) .flip-front,.flip-wrap:nth-child(5) .flip-back{border-left-color:var(--coral)}
+    .flip-wrap:nth-child(6) .flip-front,.flip-wrap:nth-child(6) .flip-back{border-left-color:var(--blue)}
+    .p-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .p-num{font-size:10px;font-weight:900;letter-spacing:0.2em;opacity:0.2}
+    .p-icon{font-family:'Material Symbols Rounded';font-size:22px;opacity:0.15;font-weight:400}
+    .flip-back .p-num{opacity:0.3}
+    .flip-back .p-icon{opacity:0.2;color:#fff}
+    .flip-front h4{font-size:clamp(15px,1.4vw,18px);font-weight:700;line-height:1.35;margin-bottom:8px}
+    .flip-front .p-sub{font-size:12px;color:rgba(26,26,26,0.4);line-height:1.5;font-weight:500}
+    .flip-back .p-narrative{font-size:14px;line-height:1.6;color:rgba(255,255,255,0.7);font-weight:500}
+    .flip-back .p-narrative strong{color:#fff;font-weight:700}
+    .flip-hint{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;opacity:0.2;margin-top:12px}
+
+    /* ═══ HOW I BUILD ═══ */
+    .build-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+    .build-card{background:#fff;border:1px solid rgba(0,0,0,0.05);border-radius:1.5rem;padding:clamp(20px,2vw,28px);box-shadow:0 12px 40px rgba(0,0,0,0.06);transition:transform 0.25s ease,box-shadow 0.25s ease;cursor:default}
+    .build-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.1)}
+    .build-icon{width:44px;height:44px;border-radius:14px;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-family:'Material Symbols Rounded';font-size:22px}
+    .build-card h4{font-size:14px;font-weight:900;text-transform:uppercase;margin-bottom:6px;letter-spacing:-0.01em}
+    .build-card p{font-size:11px;color:rgba(26,26,26,0.45);line-height:1.45;font-weight:500}
+
+    /* ═══ MARQUEE ═══ */
+    .marquee-wrap{overflow:hidden;padding:20px 0;margin-top:24px;border-top:1px solid rgba(0,0,0,0.04);border-bottom:1px solid rgba(0,0,0,0.04)}
+    .marquee-track{display:flex;gap:0;animation:marquee 25s linear infinite;width:max-content}
+    .marquee-item{display:flex;align-items:center;gap:16px;padding:0 16px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.4em;color:rgba(26,26,26,0.12);white-space:nowrap}
+    .marquee-arrow{font-size:12px;opacity:0.4}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+
+    /* ═══ WINS ═══ */
+    .wins-container{background:var(--black);color:#fff;border-radius:4rem;padding:clamp(40px,6vw,80px);position:relative;overflow:hidden}
+    .wins-glow{position:absolute;top:0;right:0;width:100%;height:100%;background:radial-gradient(circle at top right,rgba(51,115,255,0.2),transparent 50%);pointer-events:none}
+    .wins-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4em;opacity:0.4;margin-bottom:48px;position:relative;z-index:1}
+    .wins-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:48px;position:relative;z-index:1}
+    .win-val{font-size:clamp(36px,4.5vw,64px);font-weight:900;margin-bottom:4px}
+    .win-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;opacity:0.35}
+
+    /* ═══ FOUNDER ═══ */
+    .founder-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+    .founder-card{padding:clamp(32px,4vw,56px);border-radius:3rem;position:relative;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,0.15)}
+    .founder-card.white{background:#fff;border:1px solid rgba(0,0,0,0.05)}
+    .founder-card.coral{background:var(--coral);color:#fff}
+    .founder-tag{display:inline-block;padding:8px 16px;border-radius:100px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;position:absolute;top:clamp(24px,3vw,48px);right:clamp(24px,3vw,48px)}
+    .founder-card.white .founder-tag{background:var(--yellow);color:var(--black)}
+    .founder-card.coral .founder-tag{background:#fff;color:var(--black)}
+    .founder-card h4{font-size:clamp(32px,4vw,52px);font-weight:900;text-transform:uppercase;margin-bottom:24px}
+    .founder-card .lead{font-size:clamp(16px,1.5vw,20px);font-weight:700;line-height:1.4;margin-bottom:16px}
+    .founder-card .body{font-size:14px;opacity:0.55;line-height:1.65;max-width:420px;margin-bottom:24px}
+
+    /* ═══ CONTACT ═══ */
+    .contact-container{background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:4rem;padding:clamp(40px,6vw,96px);color:#fff;position:relative;overflow:hidden;box-shadow:0 25px 50px -12px rgba(51,115,255,0.25)}
+    .contact-grid-bg{position:absolute;inset:0;opacity:0.08;pointer-events:none}
+    .contact-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .contact-heading{font-size:clamp(48px,8vw,112px);font-weight:900;text-transform:uppercase;letter-spacing:-0.05em;line-height:0.85;margin-bottom:24px}
+    .contact-sub{font-size:clamp(16px,1.8vw,24px);font-weight:500;opacity:0.75;max-width:420px}
+    .contact-card{display:block;padding:clamp(20px,2.5vw,32px);border-radius:2rem;margin-bottom:16px;transition:transform 0.2s ease,box-shadow 0.2s ease}
+    .contact-card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 12px 32px rgba(0,0,0,0.15)}
+    .contact-card.white{background:#fff;color:var(--black)}
+    .contact-card.dark{background:var(--black);color:#fff}
+    .contact-card.glass{background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+    .contact-card-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.2em;opacity:0.35;margin-bottom:6px}
+    .contact-card-value{font-size:clamp(16px,2vw,24px);font-weight:900;letter-spacing:-0.02em;display:flex;justify-content:space-between;align-items:center}
+    .contact-half{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+    /* ═══ FOOTER ═══ */
+    .footer{margin-top:clamp(100px,14vh,160px);padding:48px 24px;border-top:1px solid rgba(0,0,0,0.05)}
+    .footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    .footer-name{font-weight:900;font-size:18px;letter-spacing:-0.03em;display:flex;align-items:center;gap:12px}
+    .footer-name .dot{width:4px;height:4px;background:rgba(26,26,26,0.2);border-radius:50%}
+    .footer-name span{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4em;opacity:0.35;font-style:normal}
+    .footer-right{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;opacity:0.35}
+
+    /* ═══ REVEAL ═══ */
+    .rv{opacity:0;transform:translateY(16px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1)}
+    .rv.on{opacity:1;transform:none}
+    .rv-d1{transition-delay:0.1s}
+    .rv-d2{transition-delay:0.2s}
+
+    /* ═══ RESPONSIVE ═══ */
+    @media(max-width:900px){
+      .hero-grid,.now-grid,.arc-grid,.founder-grid,.contact-inner,.contact-half{grid-template-columns:1fr}
+      .wins-grid{grid-template-columns:repeat(2,1fr)}
+      .stat-grid{grid-template-columns:repeat(2,1fr)}
+      .principle-grid{grid-template-columns:1fr}
+      .build-grid{grid-template-columns:repeat(2,1fr)}
+      .flip-wrap{min-height:160px}
+      .flip-card{min-height:160px}
+      .nav-links{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ BACKGROUND ═══ -->
+<div class="bg-layer">
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+  <div class="bg-blob bg-blob-4"></div>
+  <div class="bg-noise"><svg width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg></div>
+  <div class="bg-grid"></div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">M</div>
+    <div class="nav-links">
+      <a href="#now">Now</a>
+      <a href="#arc">Arc</a>
+      <a href="#connect">Connect</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="wrap rv">
+    <div class="avail-badge">Available for building 2026</div>
+    <div class="hero-label">Mike Mongeau</div>
+    <h2>I've built<br>products that<br><span class="grad">millions of families trust.</span></h2>
+    <div class="hero-grid">
+      <div>
+        <div class="hero-body">I turn messy, complex systems into products people love. </div>
+        <div style="margin-top:28px;display:flex;gap:10px;align-items:center">
+          <a href="#now" class="hero-cta-primary">See what I've built</a>
+          <a href="Resume.pdf" class="hero-cta-secondary">Resume</a>
+        </div>
+      </div>
+      <div style="display:flex;align-items:end;justify-content:end;gap:20px">
+        <img src="hero-pixel.jpg" alt="Mike Mongeau" class="hero-img" onerror="this.style.display='none'">
+        <div class="hero-meta">
+          <p>Based in Seattle.</p>
+          <p>Product Leader &times; Builds What Matters</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NOW ═══ -->
+<section id="now" class="mb-sec">
+  <div class="wrap">
+    <div class="now-grid">
+      <div class="rv">
+        <span class="now-label">What I'm building now</span>
+        <h3 class="now h3" style="font-size:clamp(36px,5vw,68px);font-weight:900;line-height:0.95;text-transform:uppercase;margin-bottom:32px">The trust layer<br>of the internet.</h3>
+        <p class="now-body">As Head of Product at <strong>K-ID</strong>, I'm leading product, design, and research to make the internet safer for kids and families. We shipped at-scale age verification for brands like Snap, Discord, Twitch, Hasbro, and Supercell.</p>
+        <div style="margin-bottom:16px">
+          <span class="award-pill"><span>TIME Best Inventions</span><span class="award-dot" style="background:var(--yellow)"></span><span>2025</span></span>
+          <span class="award-pill"><span>Fast Company</span><span class="award-dot" style="background:var(--coral)"></span><span>Next Big Thing</span></span>
+        </div>
+      </div>
+      <div class="stat-grid rv">
+        <div class="stat-card bg-white"><div class="stat-val">5x</div><div class="stat-lbl">Account graph growth</div></div>
+        <div class="stat-card bg-blue"><div class="stat-val">2x</div><div class="stat-lbl">MRR in 3 months</div></div>
+        <div class="stat-card bg-white"><div class="stat-val">6.3M</div><div class="stat-lbl">Verified users</div></div>
+        <div class="stat-card bg-black"><div class="stat-val">$1.5M</div><div class="stat-lbl">Sales pipeline</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE ARC ═══ -->
+<section id="arc" class="mb-sec">
+  <div class="wrap">
+    <div class="arc-head rv" style="margin-bottom:16px">
+      <h3>Career Arc</h3>
+      <p>I didn't study product management. I lived it — from the frontline up.</p>
+    </div>
+    <div class="trail rv">
+      <div class="wp">
+        <div class="wp-dot"></div>
+        <div class="wp-year">2022 — Present</div>
+        <h4>Led product for millions. Now building trust at scale.</h4>
+        <div class="wp-body">Shaped $32M ARR for Xbox families. Took those instincts to K-ID and won TIME Best Inventions. Trust isn't a feature — it's the product.</div>
+        <div class="wp-tags">
+          <span class="tag" style="background:#6C5CE7;color:#fff"><img src="kidlogo.png" alt="">K-ID</span>
+          <span class="tag" style="background:#107C10;color:#fff"><img src="xboxlogo.png" alt="">Xbox</span>
+        </div>
+      </div>
+      <div class="wp">
+        <div class="wp-dot"></div>
+        <div class="wp-year">2017 — 2022</div>
+        <h4>Turned support into growth. AI into seats.</h4>
+        <div class="wp-body">Reframed support as a growth engine. Used AI to grow 1.3M paid seats at Microsoft's highest-performing support program.</div>
+        <div class="wp-tags">
+          <span class="tag" style="background:var(--blue);color:#fff"><svg viewBox="0 0 16 16" fill="#fff" style="width:10px;height:10px"><rect x="1" y="1" width="6.5" height="6.5"/><rect x="8.5" y="1" width="6.5" height="6.5"/><rect x="1" y="8.5" width="6.5" height="6.5"/><rect x="8.5" y="8.5" width="6.5" height="6.5"/></svg>M365</span>
+          <span class="tag" style="background:var(--black);color:#fff"><svg viewBox="0 0 16 16" fill="#fff" style="width:10px;height:10px"><rect x="1" y="1" width="6.5" height="6.5"/><rect x="8.5" y="1" width="6.5" height="6.5"/><rect x="1" y="8.5" width="6.5" height="6.5"/><rect x="8.5" y="8.5" width="6.5" height="6.5"/></svg>Windows</span>
+        </div>
+      </div>
+      <div class="wp">
+        <div class="wp-dot"></div>
+        <div class="wp-year">2006 — 2017</div>
+        <h4>Built empathy from the ground up.</h4>
+        <div class="wp-body">Started in frontline support. Talked to thousands of customers, reduced incidents 58%, got hired by Microsoft before finishing my degree.</div>
+        <div class="wp-tags">
+          <span class="tag" style="background:var(--teal);color:#fff"><svg viewBox="0 0 16 16" fill="#fff" style="width:10px;height:10px"><rect x="1" y="1" width="6.5" height="6.5"/><rect x="8.5" y="1" width="6.5" height="6.5"/><rect x="1" y="8.5" width="6.5" height="6.5"/><rect x="8.5" y="8.5" width="6.5" height="6.5"/></svg>Windows</span>
+          <span class="tag" style="background:var(--black);color:#fff"><svg viewBox="0 0 16 16" fill="#fff" style="width:10px;height:10px"><rect x="1" y="1" width="6.5" height="6.5"/><rect x="8.5" y="1" width="6.5" height="6.5"/><rect x="1" y="8.5" width="6.5" height="6.5"/><rect x="8.5" y="8.5" width="6.5" height="6.5"/></svg>SharePoint</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW I THINK ═══ -->
+<section class="mb-sec">
+  <div class="wrap">
+    <div class="arc-head rv" style="margin-bottom:32px">
+      <h3>How I Think</h3>
+    </div>
+    <div class="principle-grid rv">
+      <!-- 01: Belief > Backlog (strongest — leadership) -->
+      <div class="flip-wrap"><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-front"><div class="p-top"><span class="p-num">01</span><span class="p-icon">local_fire_department</span></div><h4>You don't manage a backlog. You manage belief.</h4><div class="p-sub">Conviction is contagious — so is doubt.</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="p-top"><span class="p-num">01</span><span class="p-icon">local_fire_department</span></div><div class="p-narrative">If the team doesn't believe in what they're building, <strong>no process will save you</strong>. Your job is to make the mission undeniable — then get out of the way.</div></div>
+      </div></div>
+      <!-- 02: Discovery (core product craft) -->
+      <div class="flip-wrap"><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-front"><div class="p-top"><span class="p-num">02</span><span class="p-icon">search</span></div><h4>If you wrote that PRD before talking to a user, it's not a spec — it's a story you made up.</h4><div class="p-sub">Discovery buries the wrong ideas. Fast.</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="p-top"><span class="p-num">02</span><span class="p-icon">search</span></div><div class="p-narrative">Most PRDs are written to <strong>justify a decision already made</strong>. Real discovery means being willing to kill your favorite idea before lunch.</div></div>
+      </div></div>
+      <!-- 03: Velocity vs clarity (execution wisdom) -->
+      <div class="flip-wrap"><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-front"><div class="p-top"><span class="p-num">03</span><span class="p-icon">speed</span></div><h4>Velocity without clarity is expensive motion.</h4><div class="p-sub">Speed amplifies direction — good or bad.</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="p-top"><span class="p-num">03</span><span class="p-icon">speed</span></div><div class="p-narrative">Shipping fast means nothing if you're headed nowhere sharp. <strong>The best teams aren't fast — they're focused.</strong> Clarity is the multiplier.</div></div>
+      </div></div>
+      <!-- 04: Narrative (communication) -->
+      <div class="flip-wrap"><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-front"><div class="p-top"><span class="p-num">04</span><span class="p-icon">edit_note</span></div><h4>Narrative is a data compression device.</h4><div class="p-sub">Words are the new code. Use them precisely.</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="p-top"><span class="p-num">04</span><span class="p-icon">edit_note</span></div><div class="p-narrative">A great one-pager beats a 40-slide deck. <strong>Storytelling is like fortune-telling</strong> — frame the future clearly enough and people will build it.</div></div>
+      </div></div>
+      <!-- 05: Capacity (prioritization) -->
+      <div class="flip-wrap"><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-front"><div class="p-top"><span class="p-num">05</span><span class="p-icon">balance</span></div><h4>Capacity doesn't stretch. It trades.</h4><div class="p-sub">Every yes is a silent no.</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="p-top"><span class="p-num">05</span><span class="p-icon">balance</span></div><div class="p-narrative">The most important skill in product leadership isn't prioritization — it's <strong>the discipline to say no clearly</strong>. When everything is a priority, nothing ships well.</div></div>
+      </div></div>
+      <!-- 06: Questions (intellectual honesty) -->
+      <div class="flip-wrap"><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-front"><div class="p-top"><span class="p-num">06</span><span class="p-icon">help</span></div><h4>Great PMs make the right questions unavoidable.</h4><div class="p-sub">The right question outweighs a dozen solutions.</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="p-top"><span class="p-num">06</span><span class="p-icon">help</span></div><div class="p-narrative">You're not the answer key. <strong>You're the pressure that reveals truth.</strong> Ask questions so clear that the answer becomes obvious.</div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW I BUILD ═══ -->
+<section class="mb-sec">
+  <div class="wrap">
+    <div class="arc-head rv" style="margin-bottom:32px">
+      <h3>How I Build</h3>
+      <p>Products people trust, shipped fast and well.</p>
+    </div>
+    <div class="build-grid rv">
+      <div class="build-card">
+        <div class="build-icon">favorite</div>
+        <h4>Give a damn</h4>
+        <p>The bar is caring more than anyone expects.</p>
+      </div>
+      <div class="build-card">
+        <div class="build-icon">rocket_launch</div>
+        <h4>Ship relentlessly</h4>
+        <p>Done beats perfect. Every time.</p>
+      </div>
+      <div class="build-card">
+        <div class="build-icon">handshake</div>
+        <h4>Bridge the gaps</h4>
+        <p>The best products live at the seams between teams.</p>
+      </div>
+      <div class="build-card">
+        <div class="build-icon">auto_stories</div>
+        <h4>Tell the story</h4>
+        <p>If you can't explain it simply, you don't own it yet.</p>
+      </div>
+      <div class="build-card">
+        <div class="build-icon">person_search</div>
+        <h4>Obsess over users</h4>
+        <p>Every decision starts with a real person in pain.</p>
+      </div>
+      <div class="build-card">
+        <div class="build-icon">magic_button</div>
+        <h4>Apply the right magic</h4>
+        <p>AI is a tool, not a strategy. Know the difference.</p>
+      </div>
+    </div>
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span class="marquee-item">Give a damn</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Ship relentlessly</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Bridge the gaps</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Tell the story</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Obsess over users</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Apply the right magic</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Give a damn</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Ship relentlessly</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Bridge the gaps</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Tell the story</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Obsess over users</span><span class="marquee-arrow">&rarr;</span>
+        <span class="marquee-item">Apply the right magic</span><span class="marquee-arrow">&rarr;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SELECT WINS ═══ -->
+<section class="mb-sec">
+  <div class="wrap">
+    <div class="wins-container rv">
+      <div class="wins-glow"></div>
+      <div class="wins-label">Select Wins &amp; Recognition</div>
+      <!-- Tier 1: Featured awards -->
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;position:relative;z-index:1">
+        <span class="award-pill" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.2);color:#fff;padding:10px 20px;font-size:11px"><span>TIME Best Inventions</span><span class="award-dot" style="background:var(--yellow)"></span><span>2025</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.2);color:#fff;padding:10px 20px;font-size:11px"><span>Fast Company</span><span class="award-dot" style="background:var(--coral)"></span><span>Next Big Thing in Tech</span></span>
+      </div>
+      <!-- Tier 2: Internal awards -->
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:40px;position:relative;z-index:1">
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Key Talent &times;6</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Stock Awards &times;6</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Great Performance &times;3</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Community</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Gold Star</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Frontier</span></span>
+      </div>
+      <div class="wins-grid">
+        <div><div class="win-val">+21%</div><div class="win-lbl">MAU growth</div></div>
+        <div><div class="win-val">$32M</div><div class="win-lbl">ARR shaped</div></div>
+        <div><div class="win-val">1.3M</div><div class="win-lbl">Seats added</div></div>
+        <div><div class="win-val">+266%</div><div class="win-lbl">Account creation</div></div>
+        <div><div class="win-val">-58%</div><div class="win-lbl">Incident reduction</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOUNDER ENERGY ═══ -->
+<section class="mb-sec">
+  <div class="wrap">
+    <div class="arc-head rv" style="margin-bottom:48px">
+      <h3>Founder Energy</h3>
+      <p>Always building on the side.</p>
+    </div>
+    <div class="founder-grid rv">
+      <div class="founder-card white">
+        <span class="founder-tag">Building 2025</span>
+        <h4>SquadUp</h4>
+        <div class="lead">A kid-first platform for safe community beyond IRL. Think "Discord for Kids."</div>
+        <div class="body">Real friendships, fun, and digital citizenship. Assembling the founding team and shaping a multi-million ARR opportunity.</div>
+      </div>
+      <div class="founder-card coral">
+        <span class="founder-tag">Sold 2006</span>
+        <h4>NewsReactor</h4>
+        <div class="lead">Bootstrapped a niche content platform to 15,000+ monthly visits and 5,000+ community users.</div>
+        <div class="body">Negotiated and completed a successful exit. First proof I could build, grow, and sell.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="connect">
+  <div class="wrap">
+    <div class="contact-container rv">
+      <div class="contact-grid-bg">
+        <svg width="100%" height="100%"><pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#fff" stroke-width="1"/></pattern><rect width="100%" height="100%" fill="url(#g)"/></svg>
+      </div>
+      <div class="contact-inner">
+        <div>
+          <div class="contact-heading">Let's build<br>together.</div>
+          <div class="contact-sub">Always open to people who build with purpose.</div>
+        </div>
+        <div>
+          <a href="mailto:mike@mikemongeau.com" class="contact-card white">
+            <div class="contact-card-label">Email</div>
+            <div class="contact-card-value">mike@mikemongeau.com <span style="font-size:18px">&#8599;</span></div>
+          </a>
+          <a href="https://linkedin.com/in/mikemongeau" class="contact-card dark">
+            <div class="contact-card-label">LinkedIn</div>
+            <div class="contact-card-value">linkedin.com/in/mikemongeau <span style="font-size:18px">&#8599;</span></div>
+          </a>
+          <div class="contact-half">
+            <div class="contact-card glass">
+              <div class="contact-card-label">Phone</div>
+              <div style="font-size:18px;font-weight:700">763-234-9932</div>
+            </div>
+            <a href="Resume.pdf" class="contact-card glass" style="text-align:center">
+              <div class="contact-card-label">Resume</div>
+              <div style="font-size:18px;font-weight:700;font-style:italic">PDF &#8595;</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-name">MIKE MONGEAU <div class="dot"></div> <span>Seattle, WA</span></div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="https://linkedin.com/in/mikemongeau" style="opacity:0.3;transition:opacity 0.15s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='0.3'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <div class="footer-right">2025</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:0.06});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
