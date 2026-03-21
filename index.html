@@ -209,18 +209,19 @@
 
     /* ═══ FOUNDER ═══ */
     .founder-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-    .founder-card{padding:clamp(32px,4vw,56px);border-radius:3rem;position:relative;overflow:hidden;box-shadow:0 6px 14px rgba(0,0,0,0.12),0 20px 40px rgba(0,0,0,0.2)}
+    .founder-card{padding:clamp(32px,4vw,56px);border-radius:3rem;position:relative;overflow:hidden;box-shadow:0 6px 14px rgba(0,0,0,0.12),0 20px 40px rgba(0,0,0,0.2);display:flex;flex-direction:column}
     .founder-card.white{background:#fff;border:1px solid rgba(0,0,0,0.05)}
     .founder-card.squadly{background:#f7f7fb}
-    .founder-card.coral{background:var(--coral);color:#fff}
-    .founder-tag{display:inline-block;padding:8px 16px;border-radius:100px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;position:absolute;top:clamp(24px,3vw,48px);right:clamp(24px,3vw,48px)}
+    .founder-card.coral{background:linear-gradient(135deg,#0e1a27 0%,#16263a 100%);color:#fff}
+    .founder-tag{display:inline-block;padding:8px 16px;border-radius:100px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;align-self:flex-end;margin-bottom:16px}
     .founder-card.white .founder-tag{background:var(--yellow);color:var(--black)}
     .founder-card.coral .founder-tag{background:#fff;color:var(--black)}
-    .founder-logo{height:68px;width:auto;display:block}
+    .founder-logo{height:68px;max-width:100%;width:auto;display:block}
     .founder-title{display:flex;align-items:center;gap:12px}
     .founder-card h4{font-size:clamp(32px,4vw,52px);font-weight:900;text-transform:uppercase;margin-bottom:24px}
     .founder-card .lead{font-size:clamp(16px,1.5vw,20px);font-weight:700;line-height:1.4;margin-bottom:16px}
     .founder-card .body{font-size:14px;opacity:0.55;line-height:1.65;max-width:420px;margin-bottom:24px}
+    .founder-card.coral .body{max-width:560px}
 
     /* ═══ CONTACT ═══ */
     .contact-container{background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:4rem;padding:clamp(40px,6vw,96px);color:#fff;position:relative;overflow:hidden;box-shadow:0 25px 50px -12px rgba(51,115,255,0.25)}
@@ -261,6 +262,7 @@
       .flip-wrap{min-height:160px}
       .flip-card{min-height:160px}
       .nav-links{display:none}
+      .founder-tag{display:inline-flex}
     }
   </style>
 </head>
@@ -544,9 +546,9 @@
       </div>
       <div class="founder-card coral">
         <span class="founder-tag">Sold 2006</span>
-        <h4>NewsReactor</h4>
+        <h4 class="founder-title"><img src="images/newsreactorlogo.png" alt="NewsReactor" class="founder-logo" aria-hidden="true">NewsReactor</h4>
         <div class="lead">Bootstrapped a niche content platform to 15K+ monthly visits and 5,000+ community users.</div>
-        <div class="body">Negotiated and completed a successful exit. First proof I could build, grow, and sell.</div>
+        <div class="body">Negotiated a successful exit to Usenet.com, one of the largest U.S. Usenet companies at the time. Proof I could build, grow, and sell.</div>
       </div>
     </div>
   </div>
