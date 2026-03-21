@@ -254,9 +254,9 @@
 
     /* ═══ RESPONSIVE ═══ */
     @media(max-width:900px){
-      nav{position:sticky;top:0;mix-blend-mode:normal;transform:translateZ(0);will-change:transform}
-      .nav-inner{color:var(--black);background:rgba(248,248,248,0.78);border:1px solid rgba(0,0,0,0.06);border-radius:999px;padding:8px 12px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 20px rgba(0,0,0,0.08)}
-      .nav-logo svg{transform:translateZ(0)}
+      nav{position:absolute;top:0;left:0;right:0;mix-blend-mode:normal}
+      .nav-inner{color:var(--black)}
+      .nav-logo{color:var(--black)}
       .hero-grid,.now-grid,.arc-grid,.founder-grid,.contact-inner,.contact-half{grid-template-columns:1fr}
       .wins-grid{grid-template-columns:repeat(2,1fr)}
       .stat-grid{grid-template-columns:repeat(2,1fr)}
@@ -287,7 +287,7 @@
     <div class="nav-logo" aria-label="Mike Mongeau logo">
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M8 32V12L16 24L24 12V32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="logo-mm"/>
-        <circle cx="28" cy="8" r="3" class="logo-eye" fill="#EE4266"/>
+        <circle cx="28" cy="8" r="3" class="logo-eye" fill="#2EC4B6"/>
         <path d="M14 32V16L20 25L26 16V32" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="logo-mm-shadow"/>
         <path d="M15 36C18 38 22 38 25 36" stroke="#3373FF" stroke-width="2" stroke-linecap="round" class="logo-smile"/>
       </svg>
