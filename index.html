@@ -31,10 +31,10 @@
     .bg-noise{position:absolute;inset:0;opacity:0.4;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px}
     .bg-grid{position:absolute;inset:0;opacity:0.03;background-image:linear-gradient(var(--black) 1px,transparent 1px),linear-gradient(90deg,var(--black) 1px,transparent 1px);background-size:24px 24px}
 
-    /* ═══ NAV: mix-blend-difference ═══ */
-    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:difference}
-    .nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:#fff}
-    .nav-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;color:#fff}
+    /* ═══ NAV ═══ */
+    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:normal}
+    .nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--black)}
+    .nav-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;color:var(--black)}
     .nav-logo svg{width:40px;height:40px}
     .nav-logo .logo-mm{opacity:0.9;transition:opacity 0.2s}
     .nav-logo .logo-mm-shadow{opacity:0.2;transition:opacity 0.2s}
@@ -289,7 +289,7 @@
         <path d="M8 32V12L16 24L24 12V32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="logo-mm"/>
         <circle cx="28" cy="8" r="3" class="logo-eye" fill="#2EC4B6"/>
         <path d="M14 32V16L20 25L26 16V32" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="logo-mm-shadow"/>
-        <path d="M15 36C18 38 22 38 25 36" stroke="#3373FF" stroke-width="2" stroke-linecap="round" class="logo-smile"/>
+        <path d="M15 36C18 38 22 38 25 36" stroke="#7A5C3A" stroke-width="2" stroke-linecap="round" class="logo-smile"/>
       </svg>
     </div>
     <div class="nav-links">
