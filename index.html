@@ -22,8 +22,8 @@
     ::selection{background:var(--blue);color:#fff}
 
     /* ═══ BACKGROUND: color bleeds + noise + grid ═══ */
-    .bg-layer{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
-    .bg-blob{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
+    .bg-layer{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg);transform:translateZ(0)}
+    .bg-blob{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;will-change:filter,transform;transform:translateZ(0)}
     .bg-blob-1{top:-10%;left:-10%;width:60%;height:60%;background:rgba(255,210,63,0.2)}
     .bg-blob-2{bottom:-10%;right:-10%;width:50%;height:50%;background:rgba(51,115,255,0.15)}
     .bg-blob-3{top:20%;right:-5%;width:40%;height:40%;background:rgba(238,66,102,0.1)}
@@ -32,7 +32,7 @@
     .bg-grid{position:absolute;inset:0;opacity:0.03;background-image:linear-gradient(var(--black) 1px,transparent 1px),linear-gradient(90deg,var(--black) 1px,transparent 1px);background-size:24px 24px}
 
     /* ═══ NAV ═══ */
-    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:normal}
+    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:normal;will-change:transform}
     .nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--black)}
     .nav-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;color:var(--black)}
     .nav-logo svg{width:40px;height:40px}
@@ -233,7 +233,7 @@
     .contact-card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 6px 14px rgba(0,0,0,0.18),0 20px 40px rgba(0,0,0,0.25)}
     .contact-card.white{background:#fff;color:var(--black)}
     .contact-card.dark{background:var(--black);color:#fff}
-    .contact-card.glass{background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+    .contact-card.glass{background:rgba(255,255,255,0.1);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
     .contact-card-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.2em;opacity:0.35;margin-bottom:6px}
     .contact-card-value{font-size:clamp(16px,2vw,24px);font-weight:900;letter-spacing:-0.02em;display:flex;justify-content:space-between;align-items:center}
     .contact-half{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -257,6 +257,7 @@
       nav{position:absolute;top:0;left:0;right:0;mix-blend-mode:normal}
       .nav-inner{color:var(--black)}
       .nav-logo{color:var(--black)}
+      .marquee-track{animation-duration:32s}
       .hero-grid,.now-grid,.arc-grid,.founder-grid,.contact-inner,.contact-half{grid-template-columns:1fr}
       .wins-grid{grid-template-columns:repeat(2,1fr)}
       .stat-grid{grid-template-columns:repeat(2,1fr)}
@@ -266,6 +267,18 @@
       .flip-card{min-height:160px}
       .nav-links{display:none}
       .founder-tag{display:inline-flex}
+    }
+
+    @media(max-width:900px) and (hover:none) and (pointer:coarse){
+      body.is-scrolling .bg-blob{filter:blur(88px)}
+      body.is-scrolling .marquee-track{animation-play-state:paused}
+      body.is-scrolling .card,
+      body.is-scrolling .stat-card,
+      body.is-scrolling .build-card,
+      body.is-scrolling .flip-card,
+      body.is-scrolling .founder-card,
+      body.is-scrolling .contact-container{box-shadow:0 2px 6px rgba(0,0,0,0.08),0 8px 18px rgba(0,0,0,0.12)}
+      body.is-scrolling .contact-card.glass{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
     }
   </style>
 </head>
@@ -610,6 +623,18 @@
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:0.06});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+const mobileMotionQuery=window.matchMedia('(max-width: 900px) and (hover: none) and (pointer: coarse)');
+if(mobileMotionQuery.matches){
+  let scrollTimer;
+  const setScrolling=()=>{
+    document.body.classList.add('is-scrolling');
+    window.clearTimeout(scrollTimer);
+    scrollTimer=window.setTimeout(()=>document.body.classList.remove('is-scrolling'),120);
+  };
+  window.addEventListener('scroll',setScrolling,{passive:true});
+  window.addEventListener('touchmove',setScrolling,{passive:true});
+}
 </script>
 </body>
 </html>

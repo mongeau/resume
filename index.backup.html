@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mike Mongeau — Product Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
   <style>
@@ -26,14 +28,13 @@
     .bg-blob-2{bottom:-10%;right:-10%;width:50%;height:50%;background:rgba(51,115,255,0.15)}
     .bg-blob-3{top:20%;right:-5%;width:40%;height:40%;background:rgba(238,66,102,0.1)}
     .bg-blob-4{bottom:20%;left:-5%;width:30%;height:40%;background:rgba(46,196,182,0.1)}
-    .bg-noise{position:absolute;inset:0;opacity:0.4;mix-blend-mode:overlay}
-    .bg-noise svg{width:100%;height:100%}
+    .bg-noise{position:absolute;inset:0;opacity:0.4;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px}
     .bg-grid{position:absolute;inset:0;opacity:0.03;background-image:linear-gradient(var(--black) 1px,transparent 1px),linear-gradient(90deg,var(--black) 1px,transparent 1px);background-size:24px 24px}
 
-    /* ═══ NAV: mix-blend-difference ═══ */
-    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:difference}
-    .nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:#fff}
-    .nav-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;color:#fff}
+    /* ═══ NAV ═══ */
+    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:normal}
+    .nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--black)}
+    .nav-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;color:var(--black)}
     .nav-logo svg{width:40px;height:40px}
     .nav-logo .logo-mm{opacity:0.9;transition:opacity 0.2s}
     .nav-logo .logo-mm-shadow{opacity:0.2;transition:opacity 0.2s}
@@ -208,18 +209,19 @@
 
     /* ═══ FOUNDER ═══ */
     .founder-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-    .founder-card{padding:clamp(32px,4vw,56px);border-radius:3rem;position:relative;overflow:hidden;box-shadow:0 6px 14px rgba(0,0,0,0.12),0 20px 40px rgba(0,0,0,0.2)}
+    .founder-card{padding:clamp(32px,4vw,56px);border-radius:3rem;position:relative;overflow:hidden;box-shadow:0 6px 14px rgba(0,0,0,0.12),0 20px 40px rgba(0,0,0,0.2);display:flex;flex-direction:column}
     .founder-card.white{background:#fff;border:1px solid rgba(0,0,0,0.05)}
     .founder-card.squadly{background:#f7f7fb}
-    .founder-card.coral{background:var(--coral);color:#fff}
-    .founder-tag{display:inline-block;padding:8px 16px;border-radius:100px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;position:absolute;top:clamp(24px,3vw,48px);right:clamp(24px,3vw,48px)}
+    .founder-card.coral{background:linear-gradient(135deg,#0e1a27 0%,#16263a 100%);color:#fff}
+    .founder-tag{display:inline-block;padding:8px 16px;border-radius:100px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;align-self:flex-end;margin-bottom:16px}
     .founder-card.white .founder-tag{background:var(--yellow);color:var(--black)}
     .founder-card.coral .founder-tag{background:#fff;color:var(--black)}
-    .founder-logo{height:68px;width:auto;display:block}
+    .founder-logo{height:68px;max-width:100%;width:auto;display:block}
     .founder-title{display:flex;align-items:center;gap:12px}
     .founder-card h4{font-size:clamp(32px,4vw,52px);font-weight:900;text-transform:uppercase;margin-bottom:24px}
     .founder-card .lead{font-size:clamp(16px,1.5vw,20px);font-weight:700;line-height:1.4;margin-bottom:16px}
     .founder-card .body{font-size:14px;opacity:0.55;line-height:1.65;max-width:420px;margin-bottom:24px}
+    .founder-card.coral .body{max-width:560px}
 
     /* ═══ CONTACT ═══ */
     .contact-container{background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:4rem;padding:clamp(40px,6vw,96px);color:#fff;position:relative;overflow:hidden;box-shadow:0 25px 50px -12px rgba(51,115,255,0.25)}
@@ -252,6 +254,9 @@
 
     /* ═══ RESPONSIVE ═══ */
     @media(max-width:900px){
+      nav{position:absolute;top:0;left:0;right:0;mix-blend-mode:normal}
+      .nav-inner{color:var(--black)}
+      .nav-logo{color:var(--black)}
       .hero-grid,.now-grid,.arc-grid,.founder-grid,.contact-inner,.contact-half{grid-template-columns:1fr}
       .wins-grid{grid-template-columns:repeat(2,1fr)}
       .stat-grid{grid-template-columns:repeat(2,1fr)}
@@ -260,6 +265,7 @@
       .flip-wrap{min-height:160px}
       .flip-card{min-height:160px}
       .nav-links{display:none}
+      .founder-tag{display:inline-flex}
     }
   </style>
 </head>
@@ -271,7 +277,7 @@
   <div class="bg-blob bg-blob-2"></div>
   <div class="bg-blob bg-blob-3"></div>
   <div class="bg-blob bg-blob-4"></div>
-  <div class="bg-noise"><svg width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg></div>
+  <div class="bg-noise"></div>
   <div class="bg-grid"></div>
 </div>
 
@@ -281,9 +287,9 @@
     <div class="nav-logo" aria-label="Mike Mongeau logo">
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M8 32V12L16 24L24 12V32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="logo-mm"/>
-        <circle cx="28" cy="8" r="3" class="logo-eye" fill="#EE4266"/>
+        <circle cx="28" cy="8" r="3" class="logo-eye" fill="#2EC4B6"/>
         <path d="M14 32V16L20 25L26 16V32" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="logo-mm-shadow"/>
-        <path d="M15 36C18 38 22 38 25 36" stroke="#3373FF" stroke-width="2" stroke-linecap="round" class="logo-smile"/>
+        <path d="M15 36C18 38 22 38 25 36" stroke="#7A5C3A" stroke-width="2" stroke-linecap="round" class="logo-smile"/>
       </svg>
     </div>
     <div class="nav-links">
@@ -332,7 +338,7 @@
       <div class="rv">
         <span class="now-label">What I'm building now</span>
         <h3 class="now h3" style="font-size:clamp(36px,5vw,68px);font-weight:900;line-height:0.95;text-transform:uppercase;margin-bottom:32px">The age layer<br>of the internet.</h3>
-        <p class="now-body">As Head of Product at <strong>K-ID</strong>, I'm leading product, design, and research to make the internet safer for kids and families. We shipped at-scale age adaptive experiences for brands like Snap, Discord, Twitch, Hasbro, Konami, Scopely and Supercell.</p>
+        <p class="now-body">As Head of Product at <strong>k-ID</strong>, I'm leading product, design, and research to make the internet safer for kids and families. We shipped at-scale age adaptive experiences for brands like Snap, Discord, Twitch, Hasbro, Konami, Scopely and Supercell.</p>
         <div style="margin-bottom:16px">
           <span class="award-pill"><span>TIME Best Inventions</span><span class="award-dot" style="background:#E90606"></span><span>2025</span></span>
           <span class="award-pill"><span>Fast Company</span><span class="award-dot" style="background:#00AEEF"></span><span>Next Big Thing</span></span>
@@ -341,8 +347,8 @@
       <div class="stat-grid rv">
         <div class="stat-card bg-coral"><div class="stat-val">5x</div><div class="stat-lbl">Account graph growth</div></div>
         <div class="stat-card bg-blue"><div class="stat-val">2x</div><div class="stat-lbl">MRR in 3 months</div></div>
-        <div class="stat-card bg-yellow"><div class="stat-val">6.3M</div><div class="stat-lbl">Verified users</div></div>
-        <div class="stat-card bg-teal"><div class="stat-val">$1.5M</div><div class="stat-lbl">Sales pipeline</div></div>
+        <div class="stat-card bg-yellow"><div class="stat-val">27M+</div><div class="stat-lbl">Verified users</div></div>
+        <div class="stat-card bg-teal"><div class="stat-val">10+</div><div class="stat-lbl">Major platforms shipped</div></div>
       </div>
     </div>
   </div>
@@ -362,7 +368,7 @@
         <h4>Led product for millions. Building trust at scale.</h4>
         <div class="wp-body">Shaped how millions of families play, stay safe, and stay together on Xbox. Now making compliance something platforms actually want to ship.</div>
         <div class="wp-tags">
-          <span class="tag" style="background:#6C5CE7;color:#fff"><img src="images/kidlogo.png" alt="">K-ID</span>
+          <span class="tag" style="background:#6C5CE7;color:#fff"><img src="images/kidlogo.png" alt="">k-ID</span>
           <span class="tag" style="background:#107C10;color:#fff"><img src="images/xboxlogo.png" alt="">Xbox</span>
         </div>
       </div>
@@ -512,16 +518,16 @@
         <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Key Talent &times;6</span></span>
         <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Special Stock Awards &times;6</span></span>
         <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Great Performance &times;3</span></span>
-        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Community</span></span>
-        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Gold Star</span></span>
-        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Frontier</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Community Award</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Gold Star Award</span></span>
+        <span class="award-pill" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:9px;padding:6px 12px"><span>Frontier Award</span></span>
       </div>
       <div class="wins-grid">
-        <div><div class="win-val">+21%</div><div class="win-lbl">MAU growth</div></div>
-        <div><div class="win-val">$32M</div><div class="win-lbl">ARR shaped</div></div>
-        <div><div class="win-val">1.3M</div><div class="win-lbl">Seats added</div></div>
-        <div><div class="win-val">+266%</div><div class="win-lbl">Account creation</div></div>
-        <div><div class="win-val">-58%</div><div class="win-lbl">Incident reduction</div></div>
+        <div><div class="win-val">+21%</div><div class="win-lbl">MAU growth<br><span style="opacity:0.5;font-size:9px;letter-spacing:0.1em">Xbox Family</span></div></div>
+        <div><div class="win-val">$32M</div><div class="win-lbl">ARR shaped<br><span style="opacity:0.5;font-size:9px;letter-spacing:0.1em">Xbox Family</span></div></div>
+        <div><div class="win-val">1.3M</div><div class="win-lbl">Seats added<br><span style="opacity:0.5;font-size:9px;letter-spacing:0.1em">Microsoft 365</span></div></div>
+        <div><div class="win-val">+266%</div><div class="win-lbl">Account creation<br><span style="opacity:0.5;font-size:9px;letter-spacing:0.1em">Microsoft Family</span></div></div>
+        <div><div class="win-val">-58%</div><div class="win-lbl">Incident reduction<br><span style="opacity:0.5;font-size:9px;letter-spacing:0.1em">Windows</span></div></div>
       </div>
     </div>
   </div>
@@ -543,9 +549,9 @@
       </div>
       <div class="founder-card coral">
         <span class="founder-tag">Sold 2006</span>
-        <h4>NewsReactor</h4>
+        <h4 class="founder-title"><img src="images/newsreactorlogo.png" alt="NewsReactor" class="founder-logo" aria-hidden="true">NewsReactor</h4>
         <div class="lead">Bootstrapped a niche content platform to 15K+ monthly visits and 5,000+ community users.</div>
-        <div class="body">Negotiated and completed a successful exit. First proof I could build, grow, and sell.</div>
+        <div class="body">Negotiated a successful exit to Usenet.com, one of the largest U.S. Usenet companies at the time. Proof I could build, grow, and sell.</div>
       </div>
     </div>
   </div>
