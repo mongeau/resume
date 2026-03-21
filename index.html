@@ -233,7 +233,7 @@
     .contact-card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 6px 14px rgba(0,0,0,0.18),0 20px 40px rgba(0,0,0,0.25)}
     .contact-card.white{background:#fff;color:var(--black)}
     .contact-card.dark{background:var(--black);color:#fff}
-    .contact-card.glass{background:rgba(255,255,255,0.1);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+    .contact-card.glass{background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
     .contact-card-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.2em;opacity:0.35;margin-bottom:6px}
     .contact-card-value{font-size:clamp(16px,2vw,24px);font-weight:900;letter-spacing:-0.02em;display:flex;justify-content:space-between;align-items:center}
     .contact-half{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -254,10 +254,9 @@
 
     /* ═══ RESPONSIVE ═══ */
     @media(max-width:900px){
-      html{scroll-behavior:auto}
-      .nav-logo .logo-eye{animation:none}
-      .marquee-track{animation:none}
-      .contact-card.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(255,255,255,0.16)}
+      nav{position:sticky;top:0;mix-blend-mode:normal;transform:translateZ(0);will-change:transform}
+      .nav-inner{color:var(--black);background:rgba(248,248,248,0.78);border:1px solid rgba(0,0,0,0.06);border-radius:999px;padding:8px 12px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+      .nav-logo svg{transform:translateZ(0)}
       .hero-grid,.now-grid,.arc-grid,.founder-grid,.contact-inner,.contact-half{grid-template-columns:1fr}
       .wins-grid{grid-template-columns:repeat(2,1fr)}
       .stat-grid{grid-template-columns:repeat(2,1fr)}
@@ -267,13 +266,6 @@
       .flip-card{min-height:160px}
       .nav-links{display:none}
       .founder-tag{display:inline-flex}
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      html{scroll-behavior:auto}
-      .marquee-track,.nav-logo .logo-eye{animation:none !important}
-      .rv{transition:none}
-      *,*::before,*::after{transition:none !important}
     }
   </style>
 </head>
