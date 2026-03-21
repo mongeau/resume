@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mike Mongeau — Product Builder (Mobile Perf Test)</title>
+  <title>Mike Mongeau — Product Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -22,8 +22,8 @@
     ::selection{background:var(--blue);color:#fff}
 
     /* ═══ BACKGROUND: color bleeds + noise + grid ═══ */
-    .bg-layer{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
-    .bg-blob{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
+    .bg-layer{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg);transform:translateZ(0)}
+    .bg-blob{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;will-change:filter,transform;transform:translateZ(0)}
     .bg-blob-1{top:-10%;left:-10%;width:60%;height:60%;background:rgba(255,210,63,0.2)}
     .bg-blob-2{bottom:-10%;right:-10%;width:50%;height:50%;background:rgba(51,115,255,0.15)}
     .bg-blob-3{top:20%;right:-5%;width:40%;height:40%;background:rgba(238,66,102,0.1)}
@@ -32,7 +32,7 @@
     .bg-grid{position:absolute;inset:0;opacity:0.03;background-image:linear-gradient(var(--black) 1px,transparent 1px),linear-gradient(90deg,var(--black) 1px,transparent 1px);background-size:24px 24px}
 
     /* ═══ NAV ═══ */
-    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:normal}
+    nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:24px;mix-blend-mode:normal;will-change:transform}
     .nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--black)}
     .nav-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;color:var(--black)}
     .nav-logo svg{width:40px;height:40px}
@@ -254,18 +254,10 @@
 
     /* ═══ RESPONSIVE ═══ */
     @media(max-width:900px){
-      html{scroll-behavior:auto}
-      .bg-layer{position:absolute}
-      .bg-blob{filter:blur(96px)}
-      .bg-noise{opacity:0.28}
-      .bg-grid{opacity:0.02}
       nav{position:absolute;top:0;left:0;right:0;mix-blend-mode:normal}
       .nav-inner{color:var(--black)}
       .nav-logo{color:var(--black)}
-      .nav-logo .logo-eye{animation:none}
-      .marquee-track{animation-duration:40s}
-      .card,.stat-card,.build-card,.flip-card,.founder-card,.contact-container{box-shadow:0 3px 8px rgba(0,0,0,0.1),0 10px 22px rgba(0,0,0,0.14)}
-      .contact-card.glass{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+      .marquee-track{animation-duration:32s}
       .hero-grid,.now-grid,.arc-grid,.founder-grid,.contact-inner,.contact-half{grid-template-columns:1fr}
       .wins-grid{grid-template-columns:repeat(2,1fr)}
       .stat-grid{grid-template-columns:repeat(2,1fr)}
@@ -277,10 +269,16 @@
       .founder-tag{display:inline-flex}
     }
 
-    @media (prefers-reduced-motion: reduce){
-      html{scroll-behavior:auto}
-      .nav-logo .logo-eye,.marquee-track{animation:none !important}
-      .rv,*{transition:none !important}
+    @media(max-width:900px) and (hover:none) and (pointer:coarse){
+      body.is-scrolling .bg-blob{filter:blur(88px)}
+      body.is-scrolling .marquee-track{animation-play-state:paused}
+      body.is-scrolling .card,
+      body.is-scrolling .stat-card,
+      body.is-scrolling .build-card,
+      body.is-scrolling .flip-card,
+      body.is-scrolling .founder-card,
+      body.is-scrolling .contact-container{box-shadow:0 2px 6px rgba(0,0,0,0.08),0 8px 18px rgba(0,0,0,0.12)}
+      body.is-scrolling .contact-card.glass{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
     }
   </style>
 </head>
@@ -326,11 +324,11 @@
         <div class="hero-body">I turn messy, complex systems into products people love. </div>
         <div style="margin-top:28px;display:flex;gap:10px;align-items:center">
           <a href="#now" class="hero-cta-primary">See what I've built</a>
-          <a href="resume/files/Resume.pdf" class="hero-cta-secondary" target="_blank" rel="noopener noreferrer">Resume</a>
+          <a href="files/Resume.pdf" class="hero-cta-secondary" target="_blank" rel="noopener noreferrer">Resume</a>
         </div>
       </div>
       <div style="display:flex;align-items:end;justify-content:end;gap:20px">
-        <img src="resume/hero-pixel.jpg" alt="Mike Mongeau" class="hero-img" loading="eager" decoding="async" onerror="this.style.display='none'">
+        <img src="hero-pixel.jpg" alt="Mike Mongeau" class="hero-img" onerror="this.style.display='none'">
         <div class="hero-meta">
           <p class="meta-line">
             Hello from Seattle.
@@ -383,8 +381,8 @@
         <h4>Led product for millions. Building trust at scale.</h4>
         <div class="wp-body">Shaped how millions of families play, stay safe, and stay together on Xbox. Now making compliance something platforms actually want to ship.</div>
         <div class="wp-tags">
-          <span class="tag" style="background:#6C5CE7;color:#fff"><img src="resume/images/kidlogo.png" alt="" loading="lazy" decoding="async">k-ID</span>
-          <span class="tag" style="background:#107C10;color:#fff"><img src="resume/images/xboxlogo.png" alt="" loading="lazy" decoding="async">Xbox</span>
+          <span class="tag" style="background:#6C5CE7;color:#fff"><img src="images/kidlogo.png" alt="">k-ID</span>
+          <span class="tag" style="background:#107C10;color:#fff"><img src="images/xboxlogo.png" alt="">Xbox</span>
         </div>
       </div>
       <div class="wp">
@@ -403,9 +401,9 @@
         <h4>Built empathy from the ground up.</h4>
         <div class="wp-body">Started in frontline support. Eleven years of learning what breaks, what matters, and why. Every product instinct started here.</div>
         <div class="wp-tags">
-          <span class="tag" style="background:var(--black);color:#fff"><img src="resume/images/kinlogo.svg" alt="" loading="lazy" decoding="async">KIN</span>
+          <span class="tag" style="background:var(--black);color:#fff"><img src="images/kinlogo.svg" alt="">KIN</span>
           <span class="tag" style="background:#0078D4;color:#fff"><svg viewBox="0 0 16 16" fill="#fff" style="width:10px;height:10px"><rect x="1" y="1" width="6.5" height="6.5"/><rect x="8.5" y="1" width="6.5" height="6.5"/><rect x="1" y="8.5" width="6.5" height="6.5"/><rect x="8.5" y="8.5" width="6.5" height="6.5"/></svg>Windows Phone</span>
-          <span class="tag" style="background:#F07C7C;color:#fff"><img src="resume/images/zunelogo.svg" alt="" loading="lazy" decoding="async">Zune</span>
+          <span class="tag" style="background:#F07C7C;color:#fff"><img src="images/zunelogo.svg" alt="">Zune</span>
         </div>
       </div>
     </div>
@@ -558,13 +556,13 @@
     <div class="founder-grid rv">
       <div class="founder-card white squadly">
         <span class="founder-tag">Building 2026</span>
-        <h4 class="founder-title"><img src="resume/images/squadlylogo.png" alt="Squadly" class="founder-logo" aria-hidden="true" loading="lazy" decoding="async">Squadly</h4>
+        <h4 class="founder-title"><img src="images/squadlylogo.png" alt="Squadly" class="founder-logo" aria-hidden="true">Squadly</h4>
         <div class="lead">A kid-first platform for safe community beyond IRL. Think "Discord for Kids."</div>
         <div class="body">Real friendships, fun, and digital citizenship. Turning an obvious gap into something kids actually deserve.</div>
       </div>
       <div class="founder-card coral">
         <span class="founder-tag">Sold 2006</span>
-        <h4 class="founder-title"><img src="resume/images/newsreactorlogo.png" alt="NewsReactor" class="founder-logo" aria-hidden="true" loading="lazy" decoding="async">NewsReactor</h4>
+        <h4 class="founder-title"><img src="images/newsreactorlogo.png" alt="NewsReactor" class="founder-logo" aria-hidden="true">NewsReactor</h4>
         <div class="lead">Bootstrapped a niche content platform to 15K+ monthly visits and 5,000+ community users.</div>
         <div class="body">Negotiated a successful exit to Usenet.com, one of the largest U.S. Usenet companies at the time. Proof I could build, grow, and sell.</div>
       </div>
@@ -598,7 +596,7 @@
               <div class="contact-card-label">Phone</div>
               <div style="font-size:18px;font-weight:700">763-234-9932</div>
             </div>
-            <a href="resume/files/Resume.pdf" class="contact-card glass" style="text-align:center" target="_blank" rel="noopener noreferrer">
+            <a href="files/Resume.pdf" class="contact-card glass" style="text-align:center" target="_blank" rel="noopener noreferrer">
               <div class="contact-card-label">Resume</div>
               <div style="font-size:18px;font-weight:700;">PDF &#8595;</div>
             </a>
@@ -625,6 +623,18 @@
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:0.06});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+const mobileMotionQuery=window.matchMedia('(max-width: 900px) and (hover: none) and (pointer: coarse)');
+if(mobileMotionQuery.matches){
+  let scrollTimer;
+  const setScrolling=()=>{
+    document.body.classList.add('is-scrolling');
+    window.clearTimeout(scrollTimer);
+    scrollTimer=window.setTimeout(()=>document.body.classList.remove('is-scrolling'),120);
+  };
+  window.addEventListener('scroll',setScrolling,{passive:true});
+  window.addEventListener('touchmove',setScrolling,{passive:true});
+}
 </script>
 </body>
 </html>
